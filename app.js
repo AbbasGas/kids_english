@@ -1,123 +1,123 @@
 // ===== VOCABULARY DATA =====
 const WORDS = {
   animals: [
-    {word:'Dog',hebrew:'כלב',emoji:'🐶'},{word:'Cat',hebrew:'חתול',emoji:'🐱'},
-    {word:'Bird',hebrew:'ציפור',emoji:'🐦'},{word:'Fish',hebrew:'דג',emoji:'🐟'},
-    {word:'Horse',hebrew:'סוס',emoji:'🐴'},{word:'Cow',hebrew:'פרה',emoji:'🐄'},
-    {word:'Rabbit',hebrew:'ארנב',emoji:'🐰'},{word:'Bear',hebrew:'דוב',emoji:'🐻'},
-    {word:'Lion',hebrew:'אריה',emoji:'🦁'},{word:'Monkey',hebrew:'קוף',emoji:'🐵'},
-    {word:'Elephant',hebrew:'פיל',emoji:'🐘'}
+    {word:'Dog',arabic:'كلب',emoji:'🐶'},{word:'Cat',arabic:'قطة',emoji:'🐱'},
+    {word:'Bird',arabic:'عصفور',emoji:'🐦'},{word:'Fish',arabic:'سمكة',emoji:'🐟'},
+    {word:'Horse',arabic:'حصان',emoji:'🐴'},{word:'Cow',arabic:'بقرة',emoji:'🐄'},
+    {word:'Rabbit',arabic:'أرنب',emoji:'🐰'},{word:'Bear',arabic:'دب',emoji:'🐻'},
+    {word:'Lion',arabic:'أسد',emoji:'🦁'},{word:'Monkey',arabic:'قرد',emoji:'🐵'},
+    {word:'Elephant',arabic:'فيل',emoji:'🐘'}
   ],
   food: [
-    {word:'Apple',hebrew:'תפוח',emoji:'🍎'},{word:'Banana',hebrew:'בננה',emoji:'🍌'},
-    {word:'Bread',hebrew:'לחם',emoji:'🍞'},{word:'Water',hebrew:'מים',emoji:'💧'},
-    {word:'Milk',hebrew:'חלב',emoji:'🥛'},{word:'Egg',hebrew:'ביצה',emoji:'🥚'},
-    {word:'Rice',hebrew:'אורז',emoji:'🍚'},{word:'Cake',hebrew:'עוגה',emoji:'🎂'},
-    {word:'Pizza',hebrew:'פיצה',emoji:'🍕'},{word:'Ice Cream',hebrew:'גלידה',emoji:'🍦'}
+    {word:'Apple',arabic:'تفاحة',emoji:'🍎'},{word:'Banana',arabic:'موزة',emoji:'🍌'},
+    {word:'Bread',arabic:'خبز',emoji:'🍞'},{word:'Water',arabic:'ماء',emoji:'💧'},
+    {word:'Milk',arabic:'حليب',emoji:'🥛'},{word:'Egg',arabic:'بيضة',emoji:'🥚'},
+    {word:'Rice',arabic:'أرز',emoji:'🍚'},{word:'Cake',arabic:'كعكة',emoji:'🎂'},
+    {word:'Pizza',arabic:'بيتزا',emoji:'🍕'},{word:'Ice Cream',arabic:'مثلجات',emoji:'🍦'}
   ],
   colors: [
-    {word:'Red',hebrew:'אדום',emoji:'🔴'},{word:'Blue',hebrew:'כחול',emoji:'🔵'},
-    {word:'Green',hebrew:'ירוק',emoji:'🟢'},{word:'Yellow',hebrew:'צהוב',emoji:'🟡'},
-    {word:'Pink',hebrew:'ורוד',emoji:'🩷'},{word:'Orange',hebrew:'כתום',emoji:'🟠'},
-    {word:'Purple',hebrew:'סגול',emoji:'🟣'},{word:'White',hebrew:'לבן',emoji:'⬜'},
-    {word:'Black',hebrew:'שחור',emoji:'⬛'}
+    {word:'Red',arabic:'أحمر',emoji:'🔴'},{word:'Blue',arabic:'أزرق',emoji:'🔵'},
+    {word:'Green',arabic:'أخضر',emoji:'🟢'},{word:'Yellow',arabic:'أصفر',emoji:'🟡'},
+    {word:'Pink',arabic:'وردي',emoji:'🩷'},{word:'Orange',arabic:'برتقالي',emoji:'🟠'},
+    {word:'Purple',arabic:'بنفسجي',emoji:'🟣'},{word:'White',arabic:'أبيض',emoji:'⬜'},
+    {word:'Black',arabic:'أسود',emoji:'⬛'}
   ],
   numbers: [
-    {word:'One',hebrew:'אחת',emoji:'1️⃣'},{word:'Two',hebrew:'שתיים',emoji:'2️⃣'},
-    {word:'Three',hebrew:'שלוש',emoji:'3️⃣'},{word:'Four',hebrew:'ארבע',emoji:'4️⃣'},
-    {word:'Five',hebrew:'חמש',emoji:'5️⃣'},{word:'Six',hebrew:'שש',emoji:'6️⃣'},
-    {word:'Seven',hebrew:'שבע',emoji:'7️⃣'},{word:'Eight',hebrew:'שמונה',emoji:'8️⃣'},
-    {word:'Nine',hebrew:'תשע',emoji:'9️⃣'},{word:'Ten',hebrew:'עשר',emoji:'🔟'}
+    {word:'One',arabic:'واحد',emoji:'1️⃣'},{word:'Two',arabic:'اثنان',emoji:'2️⃣'},
+    {word:'Three',arabic:'ثلاثة',emoji:'3️⃣'},{word:'Four',arabic:'أربعة',emoji:'4️⃣'},
+    {word:'Five',arabic:'خمسة',emoji:'5️⃣'},{word:'Six',arabic:'ستة',emoji:'6️⃣'},
+    {word:'Seven',arabic:'سبعة',emoji:'7️⃣'},{word:'Eight',arabic:'ثمانية',emoji:'8️⃣'},
+    {word:'Nine',arabic:'تسعة',emoji:'9️⃣'},{word:'Ten',arabic:'عشرة',emoji:'🔟'}
   ],
   family: [
-    {word:'Mom',hebrew:'אמא',emoji:'👩'},{word:'Dad',hebrew:'אבא',emoji:'👨'},
-    {word:'Brother',hebrew:'אח',emoji:'👦'},{word:'Sister',hebrew:'אחות',emoji:'👧'},
-    {word:'Baby',hebrew:'תינוק',emoji:'👶'},{word:'Grandma',hebrew:'סבתא',emoji:'👵'},
-    {word:'Grandpa',hebrew:'סבא',emoji:'👴'}
+    {word:'Mom',arabic:'أمي',emoji:'👩'},{word:'Dad',arabic:'أبي',emoji:'👨'},
+    {word:'Brother',arabic:'أخي',emoji:'👦'},{word:'Sister',arabic:'أختي',emoji:'👧'},
+    {word:'Baby',arabic:'طفل رضيع',emoji:'👶'},{word:'Grandma',arabic:'جدتي',emoji:'👵'},
+    {word:'Grandpa',arabic:'جدي',emoji:'👴'}
   ],
   body: [
-    {word:'Head',hebrew:'ראש',emoji:'🗣️'},{word:'Hand',hebrew:'יד',emoji:'✋'},
-    {word:'Eye',hebrew:'עין',emoji:'👁️'},{word:'Ear',hebrew:'אוזן',emoji:'👂'},
-    {word:'Nose',hebrew:'אף',emoji:'👃'},{word:'Mouth',hebrew:'פה',emoji:'👄'},
-    {word:'Leg',hebrew:'רגל',emoji:'🦵'},{word:'Foot',hebrew:'כף רגל',emoji:'🦶'}
+    {word:'Head',arabic:'رأس',emoji:'🗣️'},{word:'Hand',arabic:'يد',emoji:'✋'},
+    {word:'Eye',arabic:'عين',emoji:'👁️'},{word:'Ear',arabic:'أذن',emoji:'👂'},
+    {word:'Nose',arabic:'أنف',emoji:'👃'},{word:'Mouth',arabic:'فم',emoji:'👄'},
+    {word:'Leg',arabic:'ساق',emoji:'🦵'},{word:'Foot',arabic:'قدم',emoji:'🦶'}
   ],
   clothes: [
-    {word:'Shirt',hebrew:'חולצה',emoji:'👕'},{word:'Pants',hebrew:'מכנסיים',emoji:'👖'},
-    {word:'Shoes',hebrew:'נעליים',emoji:'👟'},{word:'Hat',hebrew:'כובע',emoji:'🧢'},
-    {word:'Dress',hebrew:'שמלה',emoji:'👗'},{word:'Socks',hebrew:'גרביים',emoji:'🧦'},
-    {word:'Tie',hebrew:'עניבה',emoji:'👔'},{word:'Belt',hebrew:'חגורה',emoji:'🪢'}
+    {word:'Shirt',arabic:'قميص',emoji:'👕'},{word:'Pants',arabic:'بنطال',emoji:'👖'},
+    {word:'Shoes',arabic:'حذاء',emoji:'👟'},{word:'Hat',arabic:'قبعة',emoji:'🧢'},
+    {word:'Dress',arabic:'فستان',emoji:'👗'},{word:'Socks',arabic:'جوارب',emoji:'🧦'},
+    {word:'Tie',arabic:'رباط عنق',emoji:'👔'},{word:'Belt',arabic:'حزام',emoji:'🪢'}
   ],
   house: [
-    {word:'Door',hebrew:'דלת',emoji:'🚪'},{word:'Bed',hebrew:'מיטה',emoji:'🛏️'},
-    {word:'Chair',hebrew:'כיסא',emoji:'🪑'},{word:'Bath',hebrew:'אמבטיה',emoji:'🛁'},
-    {word:'Kitchen',hebrew:'מטבח',emoji:'🍳'},{word:'Key',hebrew:'מפתח',emoji:'🔑'}
+    {word:'Door',arabic:'باب',emoji:'🚪'},{word:'Bed',arabic:'سرير',emoji:'🛏️'},
+    {word:'Chair',arabic:'كرسي',emoji:'🪑'},{word:'Bath',arabic:'حوض استحمام',emoji:'🛁'},
+    {word:'Kitchen',arabic:'مطبخ',emoji:'🍳'},{word:'Key',arabic:'مفتاح',emoji:'🔑'}
   ],
   transport: [
-    {word:'Car',hebrew:'מכונית',emoji:'🚗'},{word:'Bus',hebrew:'אוטובוס',emoji:'🚌'},
-    {word:'Airplane',hebrew:'מטוס',emoji:'✈️'},{word:'Bike',hebrew:'אופניים',emoji:'🚲'},
-    {word:'Train',hebrew:'רכבת',emoji:'🚂'},{word:'Boat',hebrew:'סירה',emoji:'⛵'},
-    {word:'Fire Truck',hebrew:'כבאית',emoji:'🚒'},{word:'Ambulance',hebrew:'אמבולנס',emoji:'🚑'},
-    {word:'Police Car',hebrew:'ניידת משטרה',emoji:'🚓'}
+    {word:'Car',arabic:'سيارة',emoji:'🚗'},{word:'Bus',arabic:'حافلة',emoji:'🚌'},
+    {word:'Airplane',arabic:'طائرة',emoji:'✈️'},{word:'Bike',arabic:'دراجة',emoji:'🚲'},
+    {word:'Train',arabic:'قطار',emoji:'🚂'},{word:'Boat',arabic:'قارب',emoji:'⛵'},
+    {word:'Fire Truck',arabic:'سيارة إطفاء',emoji:'🚒'},{word:'Ambulance',arabic:'سيارة إسعاف',emoji:'🚑'},
+    {word:'Police Car',arabic:'سيارة شرطة',emoji:'🚓'}
   ],
   nature: [
-    {word:'Sun',hebrew:'שמש',emoji:'☀️'},{word:'Moon',hebrew:'ירח',emoji:'🌙'},
-    {word:'Star',hebrew:'כוכב',emoji:'⭐'},{word:'Tree',hebrew:'עץ',emoji:'🌳'},
-    {word:'Flower',hebrew:'פרח',emoji:'🌸'},{word:'Rain',hebrew:'גשם',emoji:'🌧️'},
-    {word:'Cloud',hebrew:'ענן',emoji:'☁️'}
+    {word:'Sun',arabic:'شمس',emoji:'☀️'},{word:'Moon',arabic:'قمر',emoji:'🌙'},
+    {word:'Star',arabic:'نجمة',emoji:'⭐'},{word:'Tree',arabic:'شجرة',emoji:'🌳'},
+    {word:'Flower',arabic:'زهرة',emoji:'🌸'},{word:'Rain',arabic:'مطر',emoji:'🌧️'},
+    {word:'Cloud',arabic:'غيمة',emoji:'☁️'}
   ],
   school: [
-    {word:'Book',hebrew:'ספר',emoji:'📖'},{word:'Pen',hebrew:'עט',emoji:'🖊️'},
-    {word:'Bag',hebrew:'תיק',emoji:'🎒'},{word:'Teacher',hebrew:'מורה',emoji:'👩‍🏫'},
-    {word:'Friend',hebrew:'חבר',emoji:'🤝'}
+    {word:'Book',arabic:'كتاب',emoji:'📖'},{word:'Pen',arabic:'قلم',emoji:'🖊️'},
+    {word:'Bag',arabic:'حقيبة',emoji:'🎒'},{word:'Teacher',arabic:'معلم',emoji:'👩‍🏫'},
+    {word:'Friend',arabic:'صديق',emoji:'🤝'}
   ],
   furniture: [
-    {word:'Table',hebrew:'שולחן',image:'images/table.png'},{word:'Sofa',hebrew:'ספה',emoji:'🛋️'},
-    {word:'Lamp',hebrew:'מנורה',emoji:'💡'},{word:'Shelf',hebrew:'מדף',image:'images/shelf.png'},
-    {word:'Desk',hebrew:'שולחן כתיבה',image:'images/desk.png'},{word:'Mirror',hebrew:'מראה',emoji:'🪞'},
-    {word:'Clock',hebrew:'שעון',emoji:'🕐'},{word:'Closet',hebrew:'ארון',image:'images/closet.png'}
+    {word:'Table',arabic:'طاولة',image:'images/table.png'},{word:'Sofa',arabic:'أريكة',emoji:'🛋️'},
+    {word:'Lamp',arabic:'مصباح',emoji:'💡'},{word:'Shelf',arabic:'رف',image:'images/shelf.png'},
+    {word:'Desk',arabic:'مكتب',image:'images/desk.png'},{word:'Mirror',arabic:'مرآة',emoji:'🪞'},
+    {word:'Clock',arabic:'ساعة',emoji:'🕐'},{word:'Closet',arabic:'خزانة',image:'images/closet.png'}
   ],
   household: [
-    {word:'Cup',hebrew:'כוס',emoji:'🥤'},{word:'Plate',hebrew:'צלחת',emoji:'🍽️'},
-    {word:'Spoon',hebrew:'כפית',emoji:'🥄'},{word:'Fork',hebrew:'מזלג',emoji:'🍴'},
-    {word:'Knife',hebrew:'סכין',emoji:'🔪'},{word:'Pot',hebrew:'סיר',emoji:'🍲'},
-    {word:'Bowl',hebrew:'קערה',emoji:'🥣'},{word:'Broom',hebrew:'מטאטא',emoji:'🧹'},
-    {word:'Towel',hebrew:'מגבת',emoji:'🧻'},{word:'Soap',hebrew:'סבון',emoji:'🧼'}
+    {word:'Cup',arabic:'كوب',emoji:'🥤'},{word:'Plate',arabic:'صحن',emoji:'🍽️'},
+    {word:'Spoon',arabic:'ملعقة',emoji:'🥄'},{word:'Fork',arabic:'شوكة',emoji:'🍴'},
+    {word:'Knife',arabic:'سكين',emoji:'🔪'},{word:'Pot',arabic:'قدر',emoji:'🍲'},
+    {word:'Bowl',arabic:'وعاء',emoji:'🥣'},{word:'Broom',arabic:'مكنسة',emoji:'🧹'},
+    {word:'Towel',arabic:'منشفة',emoji:'🧻'},{word:'Soap',arabic:'صابون',emoji:'🧼'}
   ],
   alphabet: [
-    {word:'A',hebrew:'אי',emoji:'🅰️'},{word:'B',hebrew:'בי',emoji:'🅱️'},
-    {word:'C',hebrew:'סי',emoji:'©️'},{word:'D',hebrew:'די',emoji:'🇩'},
-    {word:'E',hebrew:'אי',emoji:'🇪'},{word:'F',hebrew:'אף',emoji:'🇫'},
-    {word:'G',hebrew:'ג׳י',emoji:'🇬'},{word:'H',hebrew:'אייצ׳',emoji:'🇭'},
-    {word:'I',hebrew:'אי',emoji:'ℹ️'},{word:'J',hebrew:'ג׳יי',emoji:'🇯'},
-    {word:'K',hebrew:'קיי',emoji:'🇰'},{word:'L',hebrew:'אל',emoji:'🇱'},
-    {word:'M',hebrew:'אם',emoji:'Ⓜ️'},{word:'N',hebrew:'אן',emoji:'🇳'},
-    {word:'O',hebrew:'או',emoji:'⭕'},{word:'P',hebrew:'פי',emoji:'🅿️'},
-    {word:'Q',hebrew:'קיו',emoji:'🇶'},{word:'R',hebrew:'אר',emoji:'🇷'},
-    {word:'S',hebrew:'אס',emoji:'🇸'},{word:'T',hebrew:'טי',emoji:'🇹'},
-    {word:'U',hebrew:'יו',emoji:'🇺'},{word:'V',hebrew:'וי',emoji:'🇻'},
-    {word:'W',hebrew:'דבליו',emoji:'🇼'},{word:'X',hebrew:'אקס',emoji:'❌'},
-    {word:'Y',hebrew:'וואי',emoji:'🇾'},{word:'Z',hebrew:'זד',emoji:'🇿'}
+    {word:'A',arabic:'أي',emoji:'🅰️'},{word:'B',arabic:'بي',emoji:'🅱️'},
+    {word:'C',arabic:'سي',emoji:'©️'},{word:'D',arabic:'دي',emoji:'🇩'},
+    {word:'E',arabic:'إي',emoji:'🇪'},{word:'F',arabic:'إف',emoji:'🇫'},
+    {word:'G',arabic:'جي',emoji:'🇬'},{word:'H',arabic:'إتش',emoji:'🇭'},
+    {word:'I',arabic:'آي',emoji:'ℹ️'},{word:'J',arabic:'جاي',emoji:'🇯'},
+    {word:'K',arabic:'كاي',emoji:'🇰'},{word:'L',arabic:'إل',emoji:'🇱'},
+    {word:'M',arabic:'إم',emoji:'Ⓜ️'},{word:'N',arabic:'إن',emoji:'🇳'},
+    {word:'O',arabic:'أو',emoji:'⭕'},{word:'P',arabic:'بي',emoji:'🅿️'},
+    {word:'Q',arabic:'كيو',emoji:'🇶'},{word:'R',arabic:'آر',emoji:'🇷'},
+    {word:'S',arabic:'إس',emoji:'🇸'},{word:'T',arabic:'تي',emoji:'🇹'},
+    {word:'U',arabic:'يو',emoji:'🇺'},{word:'V',arabic:'في',emoji:'🇻'},
+    {word:'W',arabic:'دبليو',emoji:'🇼'},{word:'X',arabic:'إكس',emoji:'❌'},
+    {word:'Y',arabic:'واي',emoji:'🇾'},{word:'Z',arabic:'زيد',emoji:'🇿'}
   ]
 };
 
 const CATEGORIES = [
-  {id:'animals',name:'חיות',emoji:'🐾'},{id:'food',name:'אוכל',emoji:'🍎'},
-  {id:'colors',name:'צבעים',emoji:'🎨'},{id:'numbers',name:'מספרים',emoji:'🔢'},
-  {id:'family',name:'משפחה',emoji:'👨‍👩‍👧‍👦'},{id:'body',name:'גוף',emoji:'🫀'},
-  {id:'clothes',name:'בגדים',emoji:'👕'},{id:'house',name:'בית',emoji:'🏠'},
-  {id:'transport',name:'תחבורה',emoji:'🚗'},{id:'nature',name:'טבע',emoji:'🌿'},
-  {id:'school',name:'בית ספר',emoji:'📚'},{id:'furniture',name:'ריהוט',emoji:'🛋️'},
-  {id:'household',name:'כלי בית',emoji:'🍽️'},{id:'alphabet',name:'אלפבית',emoji:'🔤'}
+  {id:'animals',name:'حيوانات',emoji:'🐾'},{id:'food',name:'طعام',emoji:'🍎'},
+  {id:'colors',name:'ألوان',emoji:'🎨'},{id:'numbers',name:'أرقام',emoji:'🔢'},
+  {id:'family',name:'عائلة',emoji:'👨‍👩‍👧‍👦'},{id:'body',name:'جسم',emoji:'🫀'},
+  {id:'clothes',name:'ملابس',emoji:'👕'},{id:'house',name:'منزل',emoji:'🏠'},
+  {id:'transport',name:'مواصلات',emoji:'🚗'},{id:'nature',name:'طبيعة',emoji:'🌿'},
+  {id:'school',name:'مدرسة',emoji:'📚'},{id:'furniture',name:'أثاث',emoji:'🛋️'},
+  {id:'household',name:'أدوات منزلية',emoji:'🍽️'},{id:'alphabet',name:'الأبجدية',emoji:'🔤'}
 ];
 
 const BADGES = [
-  {id:'first_word',name:'המילה הראשונה',emoji:'🌱',threshold:p=>p.totalLearned>=1},
-  {id:'ten_words',name:'10 מילים!',emoji:'🌟',threshold:p=>p.totalLearned>=10},
-  {id:'thirty_words',name:'30 מילים!',emoji:'🏆',threshold:p=>p.totalLearned>=30},
-  {id:'first_game',name:'משחק ראשון',emoji:'🎮',threshold:p=>p.gamesPlayed>=1},
-  {id:'five_games',name:'5 משחקים!',emoji:'🎯',threshold:p=>p.gamesPlayed>=5},
-  {id:'perfect',name:'מושלם!',emoji:'💎',threshold:p=>p.perfectGames>=1},
-  {id:'fifty_stars',name:'כוכב על',emoji:'👑',threshold:p=>p.stars>=50}
+  {id:'first_word',name:'الكلمة الأولى',emoji:'🌱',threshold:p=>p.totalLearned>=1},
+  {id:'ten_words',name:'10 كلمات!',emoji:'🌟',threshold:p=>p.totalLearned>=10},
+  {id:'thirty_words',name:'30 كلمة!',emoji:'🏆',threshold:p=>p.totalLearned>=30},
+  {id:'first_game',name:'اللعبة الأولى',emoji:'🎮',threshold:p=>p.gamesPlayed>=1},
+  {id:'five_games',name:'5 ألعاب!',emoji:'🎯',threshold:p=>p.gamesPlayed>=5},
+  {id:'perfect',name:'ممتاز!',emoji:'💎',threshold:p=>p.perfectGames>=1},
+  {id:'fifty_stars',name:'نجم التميز',emoji:'👑',threshold:p=>p.stars>=50}
 ];
 
 // ===== STATE =====
@@ -131,10 +131,16 @@ let memoryGame = { cards: [], flipped: [], matched: 0, attempts: 0, busy: false,
 function shuffle(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
 function getAllWords() { const r=[]; for(const c in WORDS) WORDS[c].forEach((w,i)=>r.push({...w,cat:c,idx:i})); return r; }
 function renderEmoji(item) { if(item.image) return `<img src="${item.image}" alt="${item.word}">`; return item.emoji; }
+
 function speak(text) {
   if(!('speechSynthesis' in window)) return;
   window.speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  const voices = window.speechSynthesis.getVoices();
+  const goodVoice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en')) || 
+                    voices.find(v => v.name.includes('Samantha') && v.lang.startsWith('en')) ||
+                    voices.find(v => v.lang.startsWith('en'));
+  if (goodVoice) u.voice = goodVoice;
   window.speechSynthesis.speak(u);
 }
 
@@ -190,7 +196,7 @@ function updateStarsDisplay(stars) {
 
 // ===== PROFILES =====
 function setupProfiles() {
-  ['alon','romi'].forEach(p=>{
+  ['child1','child2'].forEach(p=>{
     const saved=localStorage.getItem(`kids_english_${p}`);
     const data=saved?JSON.parse(saved):{stars:0};
     document.getElementById(`${p}-stars`).textContent=`⭐ ${data.stars}`;
@@ -199,7 +205,7 @@ function setupProfiles() {
 function selectProfile(profile) {
   state.profile = profile;
   const root = document.documentElement.style;
-  if(profile==='alon'){
+  if(profile==='child1'){
     root.setProperty('--accent','var(--alon-primary)');
     root.setProperty('--gradient','var(--alon-gradient)');
   } else {
@@ -211,15 +217,15 @@ function selectProfile(profile) {
 
 // ===== HOME =====
 function setupHome() {
-  const isAlon = state.profile==='alon';
-  document.getElementById('home-avatar').textContent = isAlon?'🚀':'🦄';
-  document.getElementById('home-name').textContent = isAlon?'אלון - Alon':'רומי - Romi';
+  const isChild1 = state.profile==='child1';
+  document.getElementById('home-avatar').textContent = isChild1?'🚀':'🦄';
+  document.getElementById('home-name').textContent = isChild1?'أحمد - Ahmed':'سارة - Sarah';
   const p=getProgress();
   updateStarsDisplay(p.stars);
   const total=getTotalWords(), learned=getTotalLearned();
   const pct = total>0?Math.round(learned/total*100):0;
   document.getElementById('home-progress-bar').style.width=pct+'%';
-  document.getElementById('home-progress-text').textContent=`${pct}% מילים נלמדו (${learned}/${total})`;
+  document.getElementById('home-progress-text').textContent=`تم تعلم ${pct}% من الكلمات (${learned}/${total})`;
   // Badges
   const bc=document.getElementById('home-badges'); bc.innerHTML='';
   BADGES.forEach(b=>{
@@ -257,7 +263,7 @@ function showFlashcard() {
   const w=words[learnState.index];
   document.getElementById('flashcard-emoji').innerHTML=renderEmoji(w);
   document.getElementById('flashcard-word').textContent=w.word;
-  document.getElementById('flashcard-hebrew').textContent=w.hebrew;
+  document.getElementById('flashcard-arabic').textContent=w.arabic;
   document.getElementById('flashcard-counter').textContent=`${learnState.index+1} / ${words.length}`;
   const badge=document.getElementById('learned-badge');
   badge.style.display=isWordLearned(learnState.category,learnState.index)?'block':'none';
@@ -288,15 +294,15 @@ function setupGames() {
   const grid=document.getElementById('games-grid'); grid.innerHTML='';
   const learned=getTotalLearned();
   const games=[
-    {id:'emoji-match',icon:'🎯',name:'התאם אימוג\'י',desc:'מצא את האימוג\'י הנכון',unlock:0},
-    {id:'spelling',icon:'✏️',name:'מצא את האות',desc:'מצא את האות הראשונה',unlock:10},
-    {id:'memory',icon:'🧠',name:'משחק זיכרון',desc:'מצא את הזוגות',unlock:15}
+    {id:'emoji-match',icon:'🎯',name:'طابق الرمز',desc:'جد الرمز التعبيري الصحيح',unlock:0},
+    {id:'spelling',icon:'✏️',name:'جد الحرف',desc:'جد الحرف الأول الصحيح',unlock:10},
+    {id:'memory',icon:'🧠',name:'لعبة الذاكرة',desc:'طابق الأزواج المتشابهة',unlock:15}
   ];
   games.forEach(g=>{
     const locked=learned<g.unlock;
     const card=document.createElement('div');
     card.className='game-card'+(locked?' locked':'');
-    card.innerHTML=`<div class="game-icon">${locked?'🔒':g.icon}</div><div class="game-info"><div class="game-title">${g.name}</div><div class="game-desc">${locked?`למד ${g.unlock} מילים כדי לפתוח`:g.desc}</div></div>`;
+    card.innerHTML=`<div class="game-icon">${locked?'🔒':g.icon}</div><div class="game-info"><div class="game-title">${g.name}</div><div class="game-desc">${locked?`تعلم ${g.unlock} كلمات لفتح اللعبة`:g.desc}</div></div>`;
     if(!locked) card.onclick=()=>startGame(g.id);
     grid.appendChild(card);
   });
@@ -342,7 +348,7 @@ function checkEmojiAnswer(btn, correct) {
   const fb=document.getElementById('emoji-feedback');
   if(correct){
     btn.classList.add('correct-pop');
-    fb.textContent='כל הכבוד! 🎉';
+    fb.textContent='أحسنت! 🎉';
     fb.className='game-feedback correct';
     emojiGame.score+=2; emojiGame.correct++;
     document.getElementById('emoji-score').textContent=`⭐ ${emojiGame.score}`;
@@ -351,7 +357,7 @@ function checkEmojiAnswer(btn, correct) {
     setTimeout(()=>{emojiGame.round++;showEmojiRound();},1500);
   } else {
     btn.classList.add('wrong-shake');
-    fb.textContent='נסה שוב! 😊';
+    fb.textContent='حاول مرة أخرى! 😊';
     fb.className='game-feedback wrong';
     setTimeout(()=>btn.classList.remove('wrong-shake'),400);
   }
@@ -362,10 +368,10 @@ function endEmojiMatch() {
   if(emojiGame.correct===emojiGame.total){ p.perfectGames++; }
   saveProgress(p); checkBadges();
   const fb=document.getElementById('emoji-feedback');
-  fb.textContent=`!סיימת! ${emojiGame.score} כוכבים ⭐`;
+  fb.textContent=`أنهيت اللعبة! أحرزت ${emojiGame.score} نجوم ⭐`;
   fb.className='game-feedback correct';
   document.getElementById('emoji-word').textContent='🎊';
-  document.getElementById('emoji-options').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">חזור למשחקים</button>`;
+  document.getElementById('emoji-options').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">العودة للألعاب</button>`;
   document.getElementById('emoji-round').textContent='';
   if(window.confetti) confetti({particleCount:150,spread:100,origin:{y:0.6}});
 }
@@ -394,11 +400,9 @@ function showSpellingRound() {
   document.getElementById('spelling-feedback').className='game-feedback';
   setTimeout(()=>speak(w.word),300);
 
-  // Both kids get the easy "pick first letter" mode
   setupEasySpelling(w);
 }
 function setupEasySpelling(w) {
-  // Show the word, ask to pick the first letter
   const slots=document.getElementById('spelling-slots');
   slots.innerHTML=`<div style="font-size:32px;font-weight:700;direction:ltr;letter-spacing:4px">${w.word}</div>`;
   document.querySelector('.btn-undo').style.display='none';
@@ -414,14 +418,14 @@ function setupEasySpelling(w) {
       if(l===first){
         btn.style.borderColor='var(--correct)'; btn.style.background='#e8f5e9';
         spellingGame.score+=2;
-        document.getElementById('spelling-feedback').textContent='נכון! 🎉';
+        document.getElementById('spelling-feedback').textContent='صحيح! 🎉';
         document.getElementById('spelling-feedback').className='game-feedback correct';
         if(window.confetti) confetti({particleCount:50,spread:40,origin:{y:0.7}});
         choices.querySelectorAll('.letter-btn').forEach(b=>b.onclick=null);
         setTimeout(()=>{spellingGame.round++;showSpellingRound();},1500);
       } else {
         btn.classList.add('wrong-shake');
-        document.getElementById('spelling-feedback').textContent='נסה שוב! 😊';
+        document.getElementById('spelling-feedback').textContent='حاول مرة أخرى! 😊';
         document.getElementById('spelling-feedback').className='game-feedback wrong';
         setTimeout(()=>btn.classList.remove('wrong-shake'),400);
       }
@@ -429,14 +433,14 @@ function setupEasySpelling(w) {
     choices.appendChild(btn);
   });
 }
-function undoLetter() { /* no longer needed but kept for compat */ }
+function undoLetter() { }
 function speakSpellingWord() { speak(spellingGame.current?.word||''); }
 function endSpelling() {
   const p=getProgress(); p.gamesPlayed++; addStars(spellingGame.score); saveProgress(p); checkBadges();
   document.getElementById('spelling-hint').textContent='🎊';
-  document.getElementById('spelling-feedback').textContent=`!סיימת! ${spellingGame.score} כוכבים ⭐`;
+  document.getElementById('spelling-feedback').textContent=`أنهيت اللعبة! أحرزت ${spellingGame.score} نجوم ⭐`;
   document.getElementById('spelling-feedback').className='game-feedback correct';
-  document.getElementById('spelling-slots').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">חזור למשחקים</button>`;
+  document.getElementById('spelling-slots').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">العودة للألعاب</button>`;
   document.getElementById('letter-choices').innerHTML='';
   document.querySelector('.btn-undo').style.display='none';
   if(window.confetti) confetti({particleCount:150,spread:100,origin:{y:0.6}});
@@ -451,7 +455,7 @@ function initMemory() {
   const selected=shuffle(learned).slice(0,pairs);
   const cards=[];
   selected.forEach((w,i)=>{
-    cards.push({id:i,type:'emoji',content:w.image?`<img src="${w.image}" alt="${w.word}">`:w.emoji,word:w.word,pairId:i});
+    cards.push({id:i,type:'emoji',content:w.image?`<img src="${w.image}" alt="${w.word}">`:w.emoji,word:w.word,pairId:i,isImage:!!w.image});
     cards.push({id:i,type:'word',content:w.word,pairId:i});
   });
   memoryGame={cards:shuffle(cards),flipped:[],matched:0,attempts:0,busy:false,pairs:pairs};
@@ -462,11 +466,11 @@ function initMemory() {
   memoryGame.cards.forEach((c,i)=>{
     const card=document.createElement('div');
     card.className='memory-card'; card.dataset.index=i;
-    card.innerHTML=`<div class="card-back">❓</div><div class="card-front">${c.type==='emoji'?`<span class="mem-emoji">${c.content}</span>`:`<span class="mem-text">${c.content}</span>`}</div>`;
+    card.innerHTML=`<div class="card-back">❓</div><div class="card-front">${c.type==='emoji'?`<span class="mem-emoji">${c.isImage?c.content:c.content}</span>`:`<span class="mem-text">${c.content}</span>`}</div>`;
     card.onclick=()=>flipCard(i);
     grid.appendChild(card);
   });
-  document.getElementById('memory-score').textContent='ניסיונות: 0';
+  document.getElementById('memory-score').textContent='المحاولات: 0';
   document.getElementById('memory-feedback').textContent='';
 }
 function flipCard(idx) {
@@ -480,7 +484,7 @@ function flipCard(idx) {
   memoryGame.flipped.push(idx);
   if(memoryGame.flipped.length===2){
     memoryGame.busy=true; memoryGame.attempts++;
-    document.getElementById('memory-score').textContent=`ניסיונות: ${memoryGame.attempts}`;
+    document.getElementById('memory-score').textContent=`المحاولات: ${memoryGame.attempts}`;
     const [a,b]=memoryGame.flipped;
     const da=memoryGame.cards[a], db=memoryGame.cards[b];
     if(da.pairId===db.pairId){
@@ -503,11 +507,11 @@ function endMemory() {
   if(memoryGame.attempts<=memoryGame.pairs+2) p.perfectGames++;
   saveProgress(p); checkBadges();
   const fb=document.getElementById('memory-feedback');
-  fb.textContent=`כל הכבוד! ${stars} כוכבים ⭐`;
+  fb.textContent=`أحسنت! ${stars} نجوم ⭐`;
   fb.className='game-feedback correct';
   if(window.confetti) confetti({particleCount:150,spread:100,origin:{y:0.6}});
   setTimeout(()=>{
-    document.getElementById('memory-grid').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">חזור למשחקים</button>`;
+    document.getElementById('memory-grid').innerHTML=`<button class="btn-primary" onclick="showScreen('screen-games')">العودة للألعاب</button>`;
   },2000);
 }
 
