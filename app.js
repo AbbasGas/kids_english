@@ -122,6 +122,7 @@ const BADGES = [
 
 // ===== STATE =====
 let state = { profile: null };
+let selectedAvatar = '👨‍🎓';
 let learnState = { category: null, index: 0, timer: null };
 let emojiGame = { words: [], round: 0, score: 0, total: 10 };
 let spellingGame = { words: [], round: 0, score: 0, total: 8, current: null, filled: [] };
@@ -145,28 +146,47 @@ function speak(text) {
 }
 
 // ===== PERSISTENCE =====
+function getProfilesList() {
+  const list = localStorage.getItem('kids_english_profiles_list');
+  return list ? JSON.parse(list) : [];
+}
+
+function saveProfilesList(list) {
+  localStorage.setItem('kids_english_profiles_list', JSON.stringify(list));
+}
+
 function getProgress() {
-  const key = `kids_english_${state.profile}`;
+  if (!state.profile) return { learned:{}, stars:0, badges:[], gamesPlayed:0, perfectGames:0, avatar: '👨‍🎓' };
+  const key = `kids_english_user_${state.profile}`;
   const saved = localStorage.getItem(key);
   if(saved) return JSON.parse(saved);
-  return { learned:{}, stars:0, badges:[], gamesPlayed:0, perfectGames:0 };
+  return { learned:{}, stars:0, badges:[], gamesPlayed:0, perfectGames:0, avatar: '👨‍🎓' };
 }
-function saveProgress(data) { localStorage.setItem(`kids_english_${state.profile}`, JSON.stringify(data)); }
+
+function saveProgress(data) {
+  if (!state.profile) return;
+  localStorage.setItem(`kids_english_user_${state.profile}`, JSON.stringify(data));
+}
+
 function addStars(n) {
   const p=getProgress(); p.stars+=n; saveProgress(p); updateStarsDisplay(p.stars);
 }
+
 function markWordLearned(cat, idx) {
   const p=getProgress();
   if(!p.learned[cat]) p.learned[cat]=[];
   if(!p.learned[cat].includes(idx)){ p.learned[cat].push(idx); p.stars++; saveProgress(p); checkBadges(); }
 }
+
 function getTotalLearned() {
   const p=getProgress(); let t=0;
   for(const c in p.learned) t+=p.learned[c].length;
   return t;
 }
+
 function getTotalWords() { let t=0; for(const c in WORDS) t+=WORDS[c].length; return t; }
 function isWordLearned(cat, idx) { const p=getProgress(); return p.learned[cat] && p.learned[cat].includes(idx); }
+
 function checkBadges() {
   const p=getProgress(); p.totalLearned=getTotalLearned();
   let newBadge=false;
@@ -190,49 +210,114 @@ function showScreen(id) {
 
 function updateStarsDisplay(stars) {
   document.getElementById('home-stars').textContent = `⭐ ${stars}`;
-  const profileStarEl = document.getElementById(`${state.profile}-stars`);
-  if(profileStarEl) profileStarEl.textContent = `⭐ ${stars}`;
 }
 
-// ===== PROFILES =====
+// ===== DYNAMIC PROFILES =====
 function setupProfiles() {
-  ['child1','child2'].forEach(p=>{
-    const saved=localStorage.getItem(`kids_english_${p}`);
-    const data=saved?JSON.parse(saved):{stars:0};
-    document.getElementById(`${p}-stars`).textContent=`⭐ ${data.stars}`;
+  const container = document.getElementById('profiles-container');
+  container.innerHTML = '';
+  
+  const profiles = getProfilesList();
+
+  profiles.forEach(name => {
+    const saved = localStorage.getItem(`kids_english_user_${name}`);
+    const data = saved ? JSON.parse(saved) : { stars: 0, avatar: '👨‍🎓' };
+
+    const card = document.createElement('div');
+    card.className = 'profile-card';
+    card.onclick = () => selectProfile(name);
+    card.innerHTML = `
+      <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
+      <div class="profile-name">${name}</div>
+      <div class="profile-stars">⭐ ${data.stars || 0}</div>
+    `;
+    container.appendChild(card);
   });
+
+  // "Add Pupil" Card
+  const addCard = document.createElement('div');
+  addCard.className = 'profile-card add-card';
+  addCard.onclick = openProfileModal;
+  addCard.innerHTML = `
+    <div class="profile-emoji">➕</div>
+    <div class="profile-name" style="font-size: 20px;">تلميذ جديد</div>
+  `;
+  container.appendChild(addCard);
 }
-function selectProfile(profile) {
-  state.profile = profile;
-  const root = document.documentElement.style;
-  if(profile==='child1'){
-    root.setProperty('--accent','var(--alon-primary)');
-    root.setProperty('--gradient','var(--alon-gradient)');
-  } else {
-    root.setProperty('--accent','var(--romi-primary)');
-    root.setProperty('--gradient','var(--romi-gradient)');
+
+function openProfileModal() {
+  document.getElementById('modal-add-profile').classList.add('active');
+  document.getElementById('input-pupil-name').value = '';
+  document.getElementById('input-pupil-name').focus();
+}
+
+function closeProfileModal() {
+  document.getElementById('modal-add-profile').classList.remove('active');
+}
+
+function selectAvatar(emoji, el) {
+  selectedAvatar = emoji;
+  document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+}
+
+function confirmAddProfile() {
+  const input = document.getElementById('input-pupil-name');
+  const name = input.value.trim();
+
+  if (!name) {
+    alert('الرجاء إدخال اسم التلميذ!');
+    return;
   }
+
+  const profiles = getProfilesList();
+  if (!profiles.includes(name)) {
+    profiles.push(name);
+    saveProfilesList(profiles);
+  }
+
+  // Initialize new user data
+  const key = `kids_english_user_${name}`;
+  if (!localStorage.getItem(key)) {
+    localStorage.setItem(key, JSON.stringify({
+      learned: {},
+      stars: 0,
+      badges: [],
+      gamesPlayed: 0,
+      perfectGames: 0,
+      avatar: selectedAvatar
+    }));
+  }
+
+  closeProfileModal();
+  selectProfile(name);
+}
+
+function selectProfile(name) {
+  state.profile = name;
   showScreen('screen-home');
 }
 
 // ===== HOME =====
 function setupHome() {
-  const isChild1 = state.profile==='child1';
-  document.getElementById('home-avatar').textContent = isChild1?'🚀':'🦄';
-  document.getElementById('home-name').textContent = isChild1?'أحمد - Ahmed':'سارة - Sarah';
-  const p=getProgress();
+  const p = getProgress();
+  document.getElementById('home-avatar').textContent = p.avatar || '👨‍🎓';
+  document.getElementById('home-name').textContent = state.profile || 'التلميذ';
+  
   updateStarsDisplay(p.stars);
-  const total=getTotalWords(), learned=getTotalLearned();
-  const pct = total>0?Math.round(learned/total*100):0;
-  document.getElementById('home-progress-bar').style.width=pct+'%';
-  document.getElementById('home-progress-text').textContent=`تم تعلم ${pct}% من الكلمات (${learned}/${total})`;
+  const total = getTotalWords(), learned = getTotalLearned();
+  const pct = total > 0 ? Math.round(learned / total * 100) : 0;
+  document.getElementById('home-progress-bar').style.width = pct + '%';
+  document.getElementById('home-progress-text').textContent = `تم تعلم ${pct}% من الكلمات (${learned}/${total})`;
+  
   // Badges
-  const bc=document.getElementById('home-badges'); bc.innerHTML='';
-  BADGES.forEach(b=>{
-    const el=document.createElement('div');
-    el.className='badge'+(p.badges.includes(b.id)?' earned':'');
-    el.textContent=b.emoji;
-    el.title=b.name;
+  const bc = document.getElementById('home-badges'); 
+  bc.innerHTML = '';
+  BADGES.forEach(b => {
+    const el = document.createElement('div');
+    el.className = 'badge' + (p.badges.includes(b.id) ? ' earned' : '');
+    el.textContent = b.emoji;
+    el.title = b.name;
     bc.appendChild(el);
   });
 }
