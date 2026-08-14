@@ -96,6 +96,7 @@ body { direction: rtl; text-align: center; }
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   border: 4px solid transparent;
+  position: relative;
 }
 .profile-card:active { transform: scale(0.95); }
 .profile-card:hover { border-color: var(--alon-primary); }
@@ -112,8 +113,9 @@ body { direction: rtl; text-align: center; }
 .profile-emoji { font-size: 70px; margin-bottom: 10px; }
 .profile-name { font-size: 24px; font-weight: 700; color: #2c3e50; word-break: break-word; }
 .profile-stars { font-size: 18px; margin-top: 10px; color: #f39c12; }
+.profile-lock-icon { position: absolute; top: 12px; left: 12px; font-size: 18px; opacity: 0.6; }
 
-/* Modal Form for Pupil Input */
+/* === Modal Overlay & Content === */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -142,7 +144,7 @@ body { direction: rtl; text-align: center; }
 
 .input-name {
   width: 100%;
-  padding: 14px 18px;
+  padding: 12px 18px;
   font-size: 18px;
   border: 2px solid #ddd;
   border-radius: 14px;
@@ -178,6 +180,42 @@ body { direction: rtl; text-align: center; }
   margin-top: 10px;
 }
 .modal-buttons button { flex: 1; }
+
+/* === PIN Display & Keypad === */
+.pin-display {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px 0;
+  direction: ltr;
+}
+.pin-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: transparent;
+}
+.pin-dot.filled { background: var(--alon-primary); border-color: var(--alon-primary); }
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 260px;
+  margin: 0 auto;
+  direction: ltr;
+}
+.keypad-btn {
+  padding: 12px 0;
+  font-size: 22px;
+  font-weight: 700;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+.keypad-btn:active { background: #e0e0e0; }
 
 /* === Home Screen === */
 #screen-home {
@@ -696,28 +734,59 @@ body { direction: rtl; text-align: center; }
         <div class="app-title">🌟 متعة الإنجليزية 🌟</div>
         <div class="app-subtitle">اختر اسمك للبدء باللعب!</div>
         <div class="profiles-container" id="profiles-container">
-            <!-- Dynamic profile cards injected via JS -->
+            <!-- Dynamic profiles injected via JS -->
         </div>
     </div>
 
-    <!-- Modal: Create / Add Pupil -->
+    <!-- Modal: Add New Pupil Profile -->
     <div class="modal-overlay" id="modal-add-profile">
         <div class="modal-content">
-            <div class="modal-title">أدخل اسم التلميذ ✏️</div>
+            <div class="modal-title">تلميذ جديد ✏️</div>
             <input type="text" id="input-pupil-name" class="input-name" placeholder="اسم التلميذ..." maxlength="20" autocomplete="off">
+            <input type="password" id="input-pupil-pin" class="input-name" placeholder="رمز الدخول (4 أرقام)..." maxlength="4" pattern="\d{4}" inputmode="numeric">
             <div>
                 <div style="font-size: 14px; color: #666; margin-bottom: 8px;">اختر رمزا:</div>
                 <div class="avatar-selector" id="avatar-selector">
                     <span class="avatar-option selected" onclick="selectAvatar('👨‍🎓', this)">👨‍🎓</span>
                     <span class="avatar-option" onclick="selectAvatar('👩‍🎓', this)">👩‍🎓</span>
-                    <span class="avatar-option" onclick="selectAvatar('🚀', this)">✨</span>
+                    <span class="avatar-option" onclick="selectAvatar('🚀', this)">🚀</span>
                     <span class="avatar-option" onclick="selectAvatar('🦄', this)">🦄</span>
-                    <span class="avatar-option" onclick="selectAvatar('🦁', this)">👩</span>
+                    <span class="avatar-option" onclick="selectAvatar('🦁', this)">🦁</span>
                 </div>
             </div>
             <div class="modal-buttons">
                 <button class="btn-primary" onclick="confirmAddProfile()">حفظ</button>
                 <button class="btn-secondary" onclick="closeProfileModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: PIN Verification Prompt -->
+    <div class="modal-overlay" id="modal-pin-prompt">
+        <div class="modal-content">
+            <div class="modal-title" id="pin-prompt-title">أدخل رمز الدخول 🔑</div>
+            <div class="pin-display">
+                <span class="pin-dot" id="dot-0"></span>
+                <span class="pin-dot" id="dot-1"></span>
+                <span class="pin-dot" id="dot-2"></span>
+                <span class="pin-dot" id="dot-3"></span>
+            </div>
+            <div class="keypad">
+                <button class="keypad-btn" onclick="pressPinKey('1')">1</button>
+                <button class="keypad-btn" onclick="pressPinKey('2')">2</button>
+                <button class="keypad-btn" onclick="pressPinKey('3')">3</button>
+                <button class="keypad-btn" onclick="pressPinKey('4')">4</button>
+                <button class="keypad-btn" onclick="pressPinKey('5')">5</button>
+                <button class="keypad-btn" onclick="pressPinKey('6')">6</button>
+                <button class="keypad-btn" onclick="pressPinKey('7')">7</button>
+                <button class="keypad-btn" onclick="pressPinKey('8')">8</button>
+                <button class="keypad-btn" onclick="pressPinKey('9')">9</button>
+                <button class="keypad-btn" onclick="clearPin()">C</button>
+                <button class="keypad-btn" onclick="pressPinKey('0')">0</button>
+                <button class="keypad-btn" onclick="deletePinKey()">⌫</button>
+            </div>
+            <div class="modal-buttons" style="margin-top: 15px;">
+                <button class="btn-secondary" onclick="closePinModal()">إلغاء</button>
             </div>
         </div>
     </div>
