@@ -11,7 +11,7 @@
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
-    <!-- Firebase App (Core) and Realtime Database SDKs -->
+    <!-- Firebase SDKs (Compat version for simplicity) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -25,9 +25,6 @@
   --alon-primary: #4CAF50;
   --alon-secondary: #2196F3;
   --alon-gradient: linear-gradient(135deg, #4CAF50, #2196F3);
-  --romi-primary: #E91E90;
-  --romi-secondary: #9C27B0;
-  --romi-gradient: linear-gradient(135deg, #FF69B4, #BA68C8);
   --correct: #27ae60;
   --wrong: #e74c3c;
   --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -367,7 +364,6 @@ body { direction: rtl; text-align: center; }
 }
 
 .flashcard-emoji { font-size: 100px; }
-.flashcard-emoji img { height: 100px; vertical-align: middle; }
 .flashcard-word {
   font-size: 44px;
   font-weight: 800;
@@ -601,7 +597,6 @@ body { direction: rtl; text-align: center; }
   gap: 4px;
 }
 .memory-card .card-front .mem-emoji { font-size: 32px; }
-.memory-card .card-front .mem-emoji img { height: 32px; vertical-align: middle; }
 .memory-card .card-front .mem-text { font-size: 14px; font-weight: 700; color: #333; }
 
 .memory-card.flipped .card-back { opacity: 0; }
@@ -746,7 +741,7 @@ body { direction: rtl; text-align: center; }
         <div class="app-title">🌟 متعة الإنجليزية 🌟</div>
         <div class="app-subtitle">اختر اسمك للبدء باللعب!</div>
         <div class="profiles-container" id="profiles-container">
-            <!-- Dynamic profiles injected via JS -->
+            <!-- Dynamic Cloud profiles injected via JS -->
         </div>
     </div>
 
