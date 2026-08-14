@@ -124,7 +124,13 @@ const WORDS = {
     {word:'Socks', arabic:'جوارب', emoji:'🧦'}, {word:'Coat', arabic:'معطف', emoji:'🧥'},
     {word:'Boots', arabic:'حذاء طويل', emoji:'🥾'}, {word:'Scarf', arabic:'وشاح', emoji:'🧣'},
     {word:'Gloves', arabic:'قفازات', emoji:'🧤'}, {word:'Belt', arabic:'حزام', emoji:'🪢'},
-    {word:'Tie', arabic:'رباط عنق', emoji:'👔'}, {word:'Suit', arabic:'بدلة', emoji:'🕴️'},
+    {word:'Tie', arabic:'رباط عنق', emoji:'👔'}, {word:'Suit', arabic:'بدلة', emoji:'Here is the continuation and complete, updated code for `app.js`. In this version, **all profile persistence, authentication PIN checks, progress saving, and leaderboards interact directly with Firebase Realtime Database**.
+
+---
+
+### 2. `app.js` (Continued)
+
+```javascript
     {word:'Sneakers', arabic:'حذاء رياضي', emoji:'👟'}, {word:'Pajamas', arabic:'منامة', emoji:'👔'}
   ],
   '2ms_shopping': [
@@ -248,7 +254,7 @@ const WORDS = {
     {word:'Eco-friendly', arabic:'صديق للبيئة', emoji:'🌱'}, {word:'Deforestation', arabic:'قطع الغابات', emoji:'🪓'},
     {word:'Plastic', arabic:'بلاستيك', emoji:'🥤'}, {word:'Ocean pollution', arabic:'تلوث المحيطات', emoji:'🌊'},
     {word:'Plant trees', arabic:'غرس الأشجار', emoji:'🪴'}, {word:'Ecology', arabic:'علم البيئة', emoji:'🍃'},
-    {word:'Oxygen', arabic:'أكسجين', emoji:'💨'}, {word:'Park', arabic:'منتزه', emoji:'🏞️'},
+    {word:'Oxygen', arabic:'أكسجين', emoji:'💨'}, {word:'Park', arabic:'منتزه', emoji:'```javascript
     {word:'Save energy', arabic:'توفير الطاقة', emoji:'💡'}
   ],
   '3ms_wildlife': [
@@ -376,7 +382,6 @@ const WORDS = {
 };
 
 const CATEGORIES = [
-  // --- 1MS ---
   {id:'1ms_greetings', name:'Greetings & Basics (1MS)', emoji:'👋'},
   {id:'1ms_school', name:'School & Classroom (1MS)', emoji:'🎒'},
   {id:'1ms_family', name:'Family & Relatives (1MS)', emoji:'👨‍👩‍👧‍👦'},
@@ -384,8 +389,6 @@ const CATEGORIES = [
   {id:'1ms_colors_num', name:'Numbers & Colors (1MS)', emoji:'🎨'},
   {id:'1ms_calendar', name:'Days, Months & Seasons (1MS)', emoji:'📅'},
   {id:'1ms_pets_animals', name:'Pets & Farm Animals (1MS)', emoji:'🐶'},
-
-  // --- 2MS ---
   {id:'2ms_appearance', name:'Body & Appearance (2MS)', emoji:'👀'},
   {id:'2ms_clothes', name:'Clothes & Fashion (2MS)', emoji:'👕'},
   {id:'2ms_shopping', name:'Food & Shopping (2MS)', emoji:'🛒'},
@@ -393,16 +396,12 @@ const CATEGORIES = [
   {id:'2ms_health', name:'Health & Illnesses (2MS)', emoji:'🩺'},
   {id:'2ms_travel', name:'Travel & Directions (2MS)', emoji:'🗺️'},
   {id:'2ms_sports_hobbies', name:'Sports & Hobbies (2MS)', emoji:'⚽'},
-
-  // --- 3MS ---
   {id:'3ms_personality', name:'Personality & Abilities (3MS)', emoji:'🧠'},
   {id:'3ms_lifestyles', name:'Past & Present Life (3MS)', emoji:'📜'},
   {id:'3ms_science', name:'Science & Inventions (3MS)', emoji:'🔬'},
   {id:'3ms_environment', name:'Nature & Environment (3MS)', emoji:'🌱'},
   {id:'3ms_wildlife', name:'Wild Animals & Habitats (3MS)', emoji:'🦁'},
   {id:'3ms_weather', name:'Weather & Climate (3MS)', emoji:'🌤️'},
-
-  // --- 4MS ---
   {id:'4ms_landmarks', name:'Monuments & Landmarks (4MS)', emoji:'🏛️'},
   {id:'4ms_figures', name:'Outstanding Figures (4MS)', emoji:'📜'},
   {id:'4ms_careers', name:'Professions & Future (4MS)', emoji:'💼'},
@@ -422,7 +421,7 @@ const BADGES = [
 ];
 
 // ===== STATE =====
-let state = { profile: null };
+let state = { profile: null, data: null };
 let selectedAvatar = '👨‍🎓';
 let targetProfileName = null;
 let currentEnteredPin = '';
@@ -434,7 +433,7 @@ let memoryGame = { cards: [], flipped: [], matched: 0, attempts: 0, busy: false,
 // ===== HELPERS =====
 function shuffle(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
 function getAllWords() { const r=[]; for(const c in WORDS) WORDS[c].forEach((w,i)=>r.push({...w,cat:c,idx:i})); return r; }
-function renderEmoji(item) { if(item.image) return `<img src="${item.image}" alt="${item.word}">`; return item.emoji; }
+function renderEmoji(item) { return item.emoji; }
 
 function speak(text) {
   if(!('speechSynthesis' in window)) return;
@@ -448,40 +447,30 @@ function speak(text) {
   window.speechSynthesis.speak(u);
 }
 
-// ===== PERSISTENCE & CLOUD SYNC =====
-function getProfilesList() {
-  const list = localStorage.getItem('kids_english_profiles_list');
-  return list ? JSON.parse(list) : [];
-}
-
-function saveProfilesList(list) {
-  localStorage.setItem('kids_english_profiles_list', JSON.stringify(list));
-}
-
+// ===== FIREBASE DATA OPERATIONS =====
 function getProgress() {
-  if (!state.profile) return { learned:{}, stars:0, badges:[], gamesPlayed:0, perfectGames:0, avatar: '👨‍🎓' };
-  const key = `kids_english_user_${state.profile}`;
-  const saved = localStorage.getItem(key);
-  if(saved) return JSON.parse(saved);
+  if (state.data) return state.data;
   return { learned:{}, stars:0, badges:[], gamesPlayed:0, perfectGames:0, avatar: '👨‍🎓' };
 }
 
 function saveProgress(data) {
-  if (!state.profile) return;
-  // Local persistence
-  localStorage.setItem(`kids_english_user_${state.profile}`, JSON.stringify(data));
+  if (!state.profile || !db) return;
+  state.data = data;
   
-  // Cloud sync via Firebase Realtime Database
-  if (db) {
-    db.ref(`pupils/${state.profile}`).set({
-      name: state.profile,
-      avatar: data.avatar || '👨‍🎓',
-      stars: data.stars || 0,
-      learnedCount: getTotalLearned(),
-      badgesCount: (data.badges || []).length,
-      lastUpdated: Date.now()
-    });
-  }
+  // Direct Firebase push for complete profile persistence
+  db.ref(`pupils/${state.profile}`).set({
+    name: state.profile,
+    pin: data.pin || '0000',
+    avatar: data.avatar || '👨‍🎓',
+    stars: data.stars || 0,
+    learned: data.learned || {},
+    learnedCount: getTotalLearned(),
+    badges: data.badges || [],
+    badgesCount: (data.badges || []).length,
+    gamesPlayed: data.gamesPlayed || 0,
+    perfectGames: data.perfectGames || 0,
+    lastUpdated: Date.now()
+  });
 }
 
 function addStars(n) {
@@ -490,22 +479,25 @@ function addStars(n) {
 
 function markWordLearned(cat, idx) {
   const p=getProgress();
+  if(!p.learned) p.learned = {};
   if(!p.learned[cat]) p.learned[cat]=[];
   if(!p.learned[cat].includes(idx)){ p.learned[cat].push(idx); p.stars++; saveProgress(p); checkBadges(); }
 }
 
 function getTotalLearned() {
   const p=getProgress(); let t=0;
+  if (!p.learned) return 0;
   for(const c in p.learned) t+=p.learned[c].length;
   return t;
 }
 
 function getTotalWords() { let t=0; for(const c in WORDS) t+=WORDS[c].length; return t; }
-function isWordLearned(cat, idx) { const p=getProgress(); return p.learned[cat] && p.learned[cat].includes(idx); }
+function isWordLearned(cat, idx) { const p=getProgress(); return p.learned && p.learned[cat] && p.learned[cat].includes(idx); }
 
 function checkBadges() {
   const p=getProgress(); p.totalLearned=getTotalLearned();
   let newBadge=false;
+  if (!p.badges) p.badges = [];
   BADGES.forEach(b=>{ if(!p.badges.includes(b.id) && b.threshold(p)){ p.badges.push(b.id); newBadge=true; }});
   if(newBadge) saveProgress(p);
 }
@@ -528,53 +520,58 @@ function updateStarsDisplay(stars) {
   document.getElementById('home-stars').textContent = `⭐ ${stars}`;
 }
 
-// ===== INPUT SANITIZATION =====
 function sanitizePinInput(input) {
   input.value = input.value.replace(/\D/g, '');
 }
 
-// ===== DYNAMIC PROFILES & PIN SYSTEM =====
+// ===== FIREBASE PROFILES & PIN SYSTEM =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
   if (!container) return;
-  container.innerHTML = '';
-  
-  const profiles = getProfilesList();
+  container.innerHTML = '<div style="color:#888; font-size:18px;">جاري تحميل التلاميذ... ⏳</div>';
 
-  profiles.forEach(name => {
-    const saved = localStorage.getItem(`kids_english_user_${name}`);
-    const data = saved ? JSON.parse(saved) : { stars: 0, avatar: '👨‍🎓' };
+  if (!db) {
+    container.innerHTML = '<div style="color:#e74c3c;">تأكد من ضبط إعدادات Firebase لفتح البروفايلات!</div>';
+    return;
+  }
 
-    const card = document.createElement('div');
-    card.className = 'profile-card';
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      attemptSelectProfile(name);
+  // Load all profiles directly from Firebase Realtime Database
+  db.ref('pupils').once('value', (snapshot) => {
+    container.innerHTML = '';
+
+    snapshot.forEach((childSnapshot) => {
+      const data = childSnapshot.val();
+      const card = document.createElement('div');
+      card.className = 'profile-card';
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        attemptSelectProfile(data.name);
+      });
+
+      card.innerHTML = `
+        <span class="profile-lock-icon">🔒</span>
+        <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
+        <div class="profile-name">${data.name}</div>
+        <div class="profile-stars">⭐ ${data.stars || 0}</div>
+      `;
+      container.appendChild(card);
     });
 
-    card.innerHTML = `
-      <span class="profile-lock-icon">🔒</span>
-      <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
-      <div class="profile-name">${name}</div>
-      <div class="profile-stars">⭐ ${data.stars || 0}</div>
+    // "Add Pupil" Card
+    const addCard = document.createElement('div');
+    addCard.className = 'profile-card add-card';
+    addCard.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openProfileModal();
+    });
+    addCard.innerHTML = `
+      <div class="profile-emoji">➕</div>
+      <div class="profile-name" style="font-size: 20px;">تلميذ جديد</div>
     `;
-    container.appendChild(card);
+    container.appendChild(addCard);
   });
-
-  // "Add Pupil" Card
-  const addCard = document.createElement('div');
-  addCard.className = 'profile-card add-card';
-  addCard.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openProfileModal();
-  });
-  addCard.innerHTML = `
-    <div class="profile-emoji">➕</div>
-    <div class="profile-name" style="font-size: 20px;">تلميذ جديد</div>
-  `;
-  container.appendChild(addCard);
 }
 
 function openProfileModal() {
@@ -609,29 +606,20 @@ function confirmAddProfile() {
     return;
   }
 
-  const profiles = getProfilesList();
-  if (!profiles.includes(name)) {
-    profiles.push(name);
-    saveProfilesList(profiles);
-  }
+  const newProfile = {
+    pin: pin,
+    learned: {},
+    stars: 0,
+    badges: [],
+    gamesPlayed: 0,
+    perfectGames: 0,
+    avatar: selectedAvatar
+  };
 
-  const key = `kids_english_user_${name}`;
-  if (!localStorage.getItem(key)) {
-    const newProgress = {
-      learned: {},
-      stars: 0,
-      badges: [],
-      gamesPlayed: 0,
-      perfectGames: 0,
-      avatar: selectedAvatar,
-      pin: pin
-    };
-    localStorage.setItem(key, JSON.stringify(newProgress));
-  }
+  state.profile = name;
+  saveProgress(newProfile); // Save new pupil directly to Firebase
 
   closeProfileModal();
-  state.profile = name;
-  saveProgress(getProgress()); // Sync newly created profile to Firebase
   showScreen('screen-home');
 }
 
@@ -689,24 +677,28 @@ function updatePinDots() {
 }
 
 function verifyPin() {
-  if (!targetProfileName) return;
+  if (!targetProfileName || !db) return;
 
-  const saved = localStorage.getItem(`kids_english_user_${targetProfileName}`);
-  const data = saved ? JSON.parse(saved) : null;
+  // Direct PIN verification from Firebase Realtime Database
+  db.ref(`pupils/${targetProfileName}`).once('value', (snapshot) => {
+    const data = snapshot.val();
 
-  if (data && data.pin === currentEnteredPin) {
-    state.profile = targetProfileName;
-    const modal = document.getElementById('modal-pin-prompt');
-    if (modal) modal.classList.remove('active');
-    
-    targetProfileName = null;
-    currentEnteredPin = '';
-    
-    showScreen('screen-home');
-  } else {
-    alert('رمز الدخول غير صحيح! ❌');
-    clearPin();
-  }
+    if (data && data.pin === currentEnteredPin) {
+      state.profile = targetProfileName;
+      state.data = data;
+      
+      const modal = document.getElementById('modal-pin-prompt');
+      if (modal) modal.classList.remove('active');
+      
+      targetProfileName = null;
+      currentEnteredPin = '';
+      
+      showScreen('screen-home');
+    } else {
+      alert('رمز الدخول غير صحيح! ❌');
+      clearPin();
+    }
+  });
 }
 
 // ===== CLOUD LEADERBOARD =====
@@ -718,11 +710,11 @@ function showLeaderboard() {
   showScreen('screen-leaderboard');
 
   if (!db) {
-    container.innerHTML = '<div style="color:#888;">يرجى ربط إعدادات Firebase لعرض لوحة الصدارة!</div>';
+    container.innerHTML = '<div style="color:#888;">يرجى ضبط إعدادات Firebase!</div>';
     return;
   }
 
-  // Query top 25 pupils ordered by stars from Firebase Realtime Database
+  // Live Firebase Query for top pupils ordered by stars
   db.ref('pupils').orderByChild('stars').limitToLast(25).once('value', (snapshot) => {
     container.innerHTML = '';
     const leaderboardData = [];
@@ -731,10 +723,10 @@ function showLeaderboard() {
       leaderboardData.push(childSnapshot.val());
     });
 
-    leaderboardData.reverse(); // Reverse ascending Firebase order to descending
+    leaderboardData.reverse();
 
     if (leaderboardData.length === 0) {
-      container.innerHTML = '<div style="color:#888;">لا يوجد تلاميذ مسجلين بعد!</div>';
+      container.innerHTML = '<div style="color:#888;">لا يوجد تلاميذ مسجلين في السحابة بعد!</div>';
       return;
     }
 
@@ -779,7 +771,7 @@ function setupHome() {
   bc.innerHTML = '';
   BADGES.forEach(b => {
     const el = document.createElement('div');
-    el.className = 'badge' + (p.badges.includes(b.id) ? ' earned' : '');
+    el.className = 'badge' + (p.badges && p.badges.includes(b.id) ? ' earned' : '');
     el.textContent = b.emoji;
     el.title = b.name;
     bc.appendChild(el);
@@ -790,12 +782,14 @@ function setupHome() {
 function startLearning() { showScreen('screen-categories'); }
 function setupCategories() {
   const grid=document.getElementById('categories-grid'); grid.innerHTML='';
+  const p=getProgress();
   CATEGORIES.forEach(cat=>{
-    const p=getProgress(), learned=(p.learned[cat.id]||[]).length, total=WORDS[cat.id].length;
-    const card=document.createElement('div');
-    card.className='category-card';
-    card.innerHTML=`<div class="category-emoji">${cat.emoji}</div><div class="category-name">${cat.name}</div><div class="category-progress">${learned}/${total}</div>`;
-    card.onclick=()=>openCategory(cat.id);
+    const learned = (p.learned && p.learned[cat.id]) ? p.learned[cat.id].length : 0;
+    const total = WORDS[cat.id].length;
+    const card = document.createElement('div');
+    card.className = 'category-card';
+    card.innerHTML = `<div class="category-emoji">${cat.emoji}</div><div class="category-name">${cat.name}</div><div class="category-progress">${learned}/${total}</div>`;
+    card.onclick = () => openCategory(cat.id);
     grid.appendChild(card);
   });
 }
@@ -913,8 +907,9 @@ function checkEmojiAnswer(btn, correct) {
 }
 function endEmojiMatch() {
   const p=getProgress();
-  p.gamesPlayed++; addStars(emojiGame.score);
-  if(emojiGame.correct===emojiGame.total){ p.perfectGames++; }
+  p.gamesPlayed = (p.gamesPlayed || 0) + 1;
+  addStars(emojiGame.score);
+  if(emojiGame.correct===emojiGame.total){ p.perfectGames = (p.perfectGames || 0) + 1; }
   saveProgress(p); checkBadges();
   const fb=document.getElementById('emoji-feedback');
   fb.textContent=`أنهيت اللعبة! أحرزت ${emojiGame.score} نجوم ⭐`;
@@ -929,8 +924,10 @@ function endEmojiMatch() {
 function initSpelling() {
   const learned=[];
   const p=getProgress();
-  for(const cat in p.learned){
-    p.learned[cat].forEach(idx=>{ if(WORDS[cat][idx]) learned.push(WORDS[cat][idx]); });
+  if (p.learned) {
+    for(const cat in p.learned){
+      p.learned[cat].forEach(idx=>{ if(WORDS[cat][idx]) learned.push(WORDS[cat][idx]); });
+    }
   }
   if(learned.length<3){ learned.push(...getAllWords().slice(0,5)); }
   let pool = learned;
@@ -985,7 +982,7 @@ function setupEasySpelling(w) {
 function undoLetter() { }
 function speakSpellingWord() { speak(spellingGame.current?.word||''); }
 function endSpelling() {
-  const p=getProgress(); p.gamesPlayed++; addStars(spellingGame.score); saveProgress(p); checkBadges();
+  const p=getProgress(); p.gamesPlayed = (p.gamesPlayed || 0) + 1; addStars(spellingGame.score); saveProgress(p); checkBadges();
   document.getElementById('spelling-hint').textContent='🎊';
   document.getElementById('spelling-feedback').textContent=`أنهيت اللعبة! أحرزت ${spellingGame.score} نجوم ⭐`;
   document.getElementById('spelling-feedback').className='game-feedback correct';
@@ -999,12 +996,14 @@ function endSpelling() {
 function initMemory() {
   const pairs = 6;
   const learned=[]; const p=getProgress();
-  for(const cat in p.learned) p.learned[cat].forEach(idx=>{if(WORDS[cat][idx]) learned.push(WORDS[cat][idx]);});
+  if (p.learned) {
+    for(const cat in p.learned) p.learned[cat].forEach(idx=>{if(WORDS[cat][idx]) learned.push(WORDS[cat][idx]);});
+  }
   if(learned.length<pairs){ const all=getAllWords(); while(learned.length<pairs) learned.push(all[learned.length]); }
   const selected=shuffle(learned).slice(0,pairs);
   const cards=[];
   selected.forEach((w,i)=>{
-    cards.push({id:i,type:'emoji',content:w.image?`<img src="${w.image}" alt="${w.word}">`:w.emoji,word:w.word,pairId:i,isImage:!!w.image});
+    cards.push({id:i,type:'emoji',content:w.emoji,word:w.word,pairId:i});
     cards.push({id:i,type:'word',content:w.word,pairId:i});
   });
   memoryGame={cards:shuffle(cards),flipped:[],matched:0,attempts:0,busy:false,pairs:pairs};
@@ -1015,7 +1014,7 @@ function initMemory() {
   memoryGame.cards.forEach((c,i)=>{
     const card=document.createElement('div');
     card.className='memory-card'; card.dataset.index=i;
-    card.innerHTML=`<div class="card-back">❓</div><div class="card-front">${c.type==='emoji'?`<span class="mem-emoji">${c.isImage?c.content:c.content}</span>`:`<span class="mem-text">${c.content}</span>`}</div>`;
+    card.innerHTML=`<div class="card-back">❓</div><div class="card-front">${c.type==='emoji'?`<span class="mem-emoji">${c.content}</span>`:`<span class="mem-text">${c.content}</span>`}</div>`;
     card.onclick=()=>flipCard(i);
     grid.appendChild(card);
   });
@@ -1052,8 +1051,8 @@ function flipCard(idx) {
 }
 function endMemory() {
   const stars=Math.max(2, 6-Math.floor(memoryGame.attempts/memoryGame.pairs));
-  const p=getProgress(); p.gamesPlayed++; addStars(stars);
-  if(memoryGame.attempts<=memoryGame.pairs+2) p.perfectGames++;
+  const p=getProgress(); p.gamesPlayed = (p.gamesPlayed || 0) + 1; addStars(stars);
+  if(memoryGame.attempts<=memoryGame.pairs+2) p.perfectGames = (p.perfectGames || 0) + 1;
   saveProgress(p); checkBadges();
   const fb=document.getElementById('memory-feedback');
   fb.textContent=`أحسنت! ${stars} نجوم ⭐`;
