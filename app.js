@@ -199,12 +199,12 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active'); s.style.display='none';});
   const el=document.getElementById(id);
   if(el){ el.classList.add('active'); el.style.display='flex'; }
-  // Trigger screen-specific setup
+  
   if(id==='screen-home') setupHome();
   if(id==='screen-categories') setupCategories();
   if(id==='screen-games') setupGames();
   if(id==='screen-profiles') setupProfiles();
-  // Clear learn timer
+
   if(id!=='screen-learn' && learnState.timer){ clearTimeout(learnState.timer); learnState.timer=null; }
 }
 
@@ -215,6 +215,7 @@ function updateStarsDisplay(stars) {
 // ===== DYNAMIC PROFILES =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
+  if (!container) return;
   container.innerHTML = '';
   
   const profiles = getProfilesList();
@@ -276,7 +277,6 @@ function confirmAddProfile() {
     saveProfilesList(profiles);
   }
 
-  // Initialize new user data
   const key = `kids_english_user_${name}`;
   if (!localStorage.getItem(key)) {
     localStorage.setItem(key, JSON.stringify({
@@ -310,7 +310,6 @@ function setupHome() {
   document.getElementById('home-progress-bar').style.width = pct + '%';
   document.getElementById('home-progress-text').textContent = `تم تعلم ${pct}% من الكلمات (${learned}/${total})`;
   
-  // Badges
   const bc = document.getElementById('home-badges'); 
   bc.innerHTML = '';
   BADGES.forEach(b => {
@@ -352,9 +351,9 @@ function showFlashcard() {
   document.getElementById('flashcard-counter').textContent=`${learnState.index+1} / ${words.length}`;
   const badge=document.getElementById('learned-badge');
   badge.style.display=isWordLearned(learnState.category,learnState.index)?'block':'none';
-  // Auto-speak
+  
   setTimeout(()=>speak(w.word), 400);
-  // Mark learned after 2 seconds
+  
   if(learnState.timer) clearTimeout(learnState.timer);
   learnState.timer=setTimeout(()=>{
     markWordLearned(learnState.category, learnState.index);
@@ -414,7 +413,7 @@ function showEmojiRound() {
   document.getElementById('emoji-round').textContent=`${emojiGame.round+1} / ${emojiGame.total}`;
   document.getElementById('emoji-feedback').textContent='';
   document.getElementById('emoji-feedback').className='game-feedback';
-  // Get wrong options
+  
   const all=getAllWords().filter(x=>x.word!==w.word);
   const wrongs=shuffle(all).slice(0,3);
   const opts=shuffle([w,...wrongs]);
@@ -602,5 +601,6 @@ function endMemory() {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', ()=>{
+  setupProfiles();
   showScreen('screen-profiles');
 });
