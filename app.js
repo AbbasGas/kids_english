@@ -606,6 +606,7 @@ function selectAvatar(emoji, el) {
   if (el) el.classList.add('selected');
 }
 
+// ===== PREVENT OVERWRITING EXISTING PUPILS =====
 function confirmAddProfile() {
   const input = document.getElementById('input-pupil-name');
   const pinInput = document.getElementById('input-pupil-pin');
@@ -621,21 +622,34 @@ function confirmAddProfile() {
     return;
   }
 
-  const newProfile = {
-    pin: pin,
-    learned: {},
-    stars: 0,
-    badges: [],
-    gamesPlayed: 0,
-    perfectGames: 0,
-    avatar: selectedAvatar
-  };
+  if (!db) {
+    alert('جاري الإتصال بالخادم، يرجى المحاولة بعد لحظات...');
+    return;
+  }
 
-  state.profile = name;
-  saveProgress(newProfile);
+  // Check if pupil name already exists in Firebase before creating
+  db.ref(`pupils/${name}`).once('value', (snapshot) => {
+    if (snapshot.exists()) {
+      alert(`عذراً! الاسم "${name}" مستعمل من قبل. يرجى اختيار اسم آخر أو تسجبل الدخول بإدخال رمزك الشخصي.`);
+    } else {
+      // Create new profile safely without overwriting
+      const newProfile = {
+        pin: pin,
+        learned: {},
+        stars: 0,
+        badges: [],
+        gamesPlayed: 0,
+        perfectGames: 0,
+        avatar: selectedAvatar
+      };
 
-  closeProfileModal();
-  showScreen('screen-home');
+      state.profile = name;
+      saveProgress(newProfile);
+
+      closeProfileModal();
+      showScreen('screen-home');
+    }
+  });
 }
 
 function attemptSelectProfile(name) {
