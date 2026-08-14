@@ -1,4 +1,21 @@
-// ===== VOCABULARY DATA (ALGERIAN MIDDLE SCHOOL SYLLABUS: 1MS - 4MS / EXACTLY 600 WORDS) =====
+// ===== FIREBASE CONFIGURATION =====
+const firebaseConfig = {
+  apiKey: "AIzaSyAxJ2lcQRaKtljfUA7opWut0ILD9Gau1ok",
+  authDomain: "good-apps-19f17.firebaseapp.com",
+  databaseURL: "https://good-apps-19f17-default-rtdb.firebaseio.com",
+  projectId: "good-apps-19f17",
+  storageBucket: "good-apps-19f17.appspot.com",
+  messagingSenderId: "842196882176",
+  appId: "1:842196882176:web:06342028a57ba7e3dfd9e5"
+};
+
+// Initialize Firebase Realtime Database
+if (typeof firebase !== 'undefined' && firebase.initializeApp) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = typeof firebase !== 'undefined' ? firebase.database() : null;
+
+// ===== VOCABULARY DATA (ALGERIAN MIDDLE SCHOOL SYLLABUS: 1MS - 4MS / 600 WORDS) =====
 const WORDS = {
   // ==================== 1MS (FIRST YEAR) ====================
   '1ms_greetings': [
@@ -431,7 +448,7 @@ function speak(text) {
   window.speechSynthesis.speak(u);
 }
 
-// ===== PERSISTENCE =====
+// ===== PERSISTENCE & CLOUD SYNC =====
 function getProfilesList() {
   const list = localStorage.getItem('kids_english_profiles_list');
   return list ? JSON.parse(list) : [];
@@ -451,7 +468,20 @@ function getProgress() {
 
 function saveProgress(data) {
   if (!state.profile) return;
+  // Local persistence
   localStorage.setItem(`kids_english_user_${state.profile}`, JSON.stringify(data));
+  
+  // Cloud sync via Firebase Realtime Database
+  if (db) {
+    db.ref(`pupils/${state.profile}`).set({
+      name: state.profile,
+      avatar: data.avatar || '👨‍🎓',
+      stars: data.stars || 0,
+      learnedCount: getTotalLearned(),
+      badgesCount: (data.badges || []).length,
+      lastUpdated: Date.now()
+    });
+  }
 }
 
 function addStars(n) {
@@ -587,7 +617,7 @@ function confirmAddProfile() {
 
   const key = `kids_english_user_${name}`;
   if (!localStorage.getItem(key)) {
-    localStorage.setItem(key, JSON.stringify({
+    const newProgress = {
       learned: {},
       stars: 0,
       badges: [],
@@ -595,11 +625,13 @@ function confirmAddProfile() {
       perfectGames: 0,
       avatar: selectedAvatar,
       pin: pin
-    }));
+    };
+    localStorage.setItem(key, JSON.stringify(newProgress));
   }
 
   closeProfileModal();
   state.profile = name;
+  saveProgress(getProgress()); // Sync newly created profile to Firebase
   showScreen('screen-home');
 }
 
@@ -675,6 +707,60 @@ function verifyPin() {
     alert('رمز الدخول غير صحيح! ❌');
     clearPin();
   }
+}
+
+// ===== CLOUD LEADERBOARD =====
+function showLeaderboard() {
+  const container = document.getElementById('leaderboard-list');
+  if (!container) return;
+  
+  container.innerHTML = '<div style="color:#888; font-size:18px;">جاري تحميل لوحة الصدارة... ⏳</div>';
+  showScreen('screen-leaderboard');
+
+  if (!db) {
+    container.innerHTML = '<div style="color:#888;">يرجى ربط إعدادات Firebase لعرض لوحة الصدارة!</div>';
+    return;
+  }
+
+  // Query top 25 pupils ordered by stars from Firebase Realtime Database
+  db.ref('pupils').orderByChild('stars').limitToLast(25).once('value', (snapshot) => {
+    container.innerHTML = '';
+    const leaderboardData = [];
+
+    snapshot.forEach((childSnapshot) => {
+      leaderboardData.push(childSnapshot.val());
+    });
+
+    leaderboardData.reverse(); // Reverse ascending Firebase order to descending
+
+    if (leaderboardData.length === 0) {
+      container.innerHTML = '<div style="color:#888;">لا يوجد تلاميذ مسجلين بعد!</div>';
+      return;
+    }
+
+    leaderboardData.forEach((pupil, index) => {
+      const rank = index + 1;
+      let medal = `#${rank}`;
+      if (rank === 1) medal = '🥇';
+      else if (rank === 2) medal = '🥈';
+      else if (rank === 3) medal = '🥉';
+
+      const card = document.createElement('div');
+      card.className = `leaderboard-card ${rank <= 3 ? 'rank-' + rank : ''}`;
+      card.innerHTML = `
+        <div class="leaderboard-rank">${medal}</div>
+        <div class="leaderboard-user">
+          <span class="leaderboard-avatar">${pupil.avatar || '👨‍🎓'}</span>
+          <div>
+            <div class="leaderboard-name">${pupil.name}</div>
+            <div style="font-size: 12px; color: #888;">📖 تعلم ${pupil.learnedCount || 0} كلمة | 🏆 ${pupil.badgesCount || 0} أوسمة</div>
+          </div>
+        </div>
+        <div class="leaderboard-stats">⭐ ${pupil.stars || 0}</div>
+      `;
+      container.appendChild(card);
+    });
+  });
 }
 
 // ===== HOME =====
