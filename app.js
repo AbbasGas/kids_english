@@ -123,6 +123,8 @@ const BADGES = [
 // ===== STATE =====
 let state = { profile: null };
 let selectedAvatar = '👨‍🎓';
+let targetProfileName = null;
+let currentEnteredPin = '';
 let learnState = { category: null, index: 0, timer: null };
 let emojiGame = { words: [], round: 0, score: 0, total: 10 };
 let spellingGame = { words: [], round: 0, score: 0, total: 8, current: null, filled: [] };
@@ -212,7 +214,7 @@ function updateStarsDisplay(stars) {
   document.getElementById('home-stars').textContent = `⭐ ${stars}`;
 }
 
-// ===== DYNAMIC PROFILES =====
+// ===== DYNAMIC PROFILES & PIN SYSTEM =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
   if (!container) return;
@@ -226,8 +228,9 @@ function setupProfiles() {
 
     const card = document.createElement('div');
     card.className = 'profile-card';
-    card.onclick = () => selectProfile(name);
+    card.onclick = () => attemptSelectProfile(name);
     card.innerHTML = `
+      <span class="profile-lock-icon">🔒</span>
       <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
       <div class="profile-name">${name}</div>
       <div class="profile-stars">⭐ ${data.stars || 0}</div>
@@ -249,6 +252,7 @@ function setupProfiles() {
 function openProfileModal() {
   document.getElementById('modal-add-profile').classList.add('active');
   document.getElementById('input-pupil-name').value = '';
+  document.getElementById('input-pupil-pin').value = '';
   document.getElementById('input-pupil-name').focus();
 }
 
@@ -264,10 +268,16 @@ function selectAvatar(emoji, el) {
 
 function confirmAddProfile() {
   const input = document.getElementById('input-pupil-name');
+  const pinInput = document.getElementById('input-pupil-pin');
   const name = input.value.trim();
+  const pin = pinInput.value.trim();
 
   if (!name) {
     alert('الرجاء إدخال اسم التلميذ!');
+    return;
+  }
+  if (!pin || pin.length !== 4 || isNaN(pin)) {
+    alert('الرجاء إدخال رمز مكون من 4 أرقام!');
     return;
   }
 
@@ -285,17 +295,74 @@ function confirmAddProfile() {
       badges: [],
       gamesPlayed: 0,
       perfectGames: 0,
-      avatar: selectedAvatar
+      avatar: selectedAvatar,
+      pin: pin
     }));
   }
 
   closeProfileModal();
-  selectProfile(name);
-}
-
-function selectProfile(name) {
   state.profile = name;
   showScreen('screen-home');
+}
+
+function attemptSelectProfile(name) {
+  targetProfileName = name;
+  currentEnteredPin = '';
+  updatePinDots();
+  document.getElementById('pin-prompt-title').textContent = `رمز الدخول الخاص بـ ${name} 🔑`;
+  document.getElementById('modal-pin-prompt').classList.add('active');
+}
+
+function closePinModal() {
+  document.getElementById('modal-pin-prompt').classList.remove('active');
+  targetProfileName = null;
+  currentEnteredPin = '';
+}
+
+function pressPinKey(digit) {
+  if (currentEnteredPin.length < 4) {
+    currentEnteredPin += digit;
+    updatePinDots();
+    if (currentEnteredPin.length === 4) {
+      setTimeout(verifyPin, 150);
+    }
+  }
+}
+
+function deletePinKey() {
+  if (currentEnteredPin.length > 0) {
+    currentEnteredPin = currentEnteredPin.slice(0, -1);
+    updatePinDots();
+  }
+}
+
+function clearPin() {
+  currentEnteredPin = '';
+  updatePinDots();
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    if (dot) {
+      if (i < currentEnteredPin.length) dot.classList.add('filled');
+      else dot.classList.remove('filled');
+    }
+  }
+}
+
+function verifyPin() {
+  const saved = localStorage.getItem(`kids_english_user_${targetProfileName}`);
+  const data = saved ? JSON.parse(saved) : null;
+
+  if (data && data.pin === currentEnteredPin) {
+    state.profile = targetProfileName;
+    closePinModal();
+    showScreen('screen-home');
+  } else {
+    alert('رمز الدخول غير صحيح! ❌');
+    clearPin();
+  }
 }
 
 // ===== HOME =====
