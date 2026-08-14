@@ -214,6 +214,11 @@ function updateStarsDisplay(stars) {
   document.getElementById('home-stars').textContent = `⭐ ${stars}`;
 }
 
+// ===== SANITIZER FOR PIN FIELD =====
+function sanitizePinInput(input) {
+  input.value = input.value.replace(/\D/g, '');
+}
+
 // ===== DYNAMIC PROFILES & PIN SYSTEM =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
@@ -228,7 +233,12 @@ function setupProfiles() {
 
     const card = document.createElement('div');
     card.className = 'profile-card';
-    card.onclick = () => attemptSelectProfile(name);
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      attemptSelectProfile(name);
+    });
+
     card.innerHTML = `
       <span class="profile-lock-icon">🔒</span>
       <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
@@ -241,7 +251,11 @@ function setupProfiles() {
   // "Add Pupil" Card
   const addCard = document.createElement('div');
   addCard.className = 'profile-card add-card';
-  addCard.onclick = openProfileModal;
+  addCard.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openProfileModal();
+  });
   addCard.innerHTML = `
     <div class="profile-emoji">➕</div>
     <div class="profile-name" style="font-size: 20px;">تلميذ جديد</div>
@@ -276,8 +290,8 @@ function confirmAddProfile() {
     alert('الرجاء إدخال اسم التلميذ!');
     return;
   }
-  if (!pin || pin.length !== 4 || isNaN(pin)) {
-    alert('الرجاء إدخال رمز مكون من 4 أرقام!');
+  if (!/^\d{4}$/.test(pin)) {
+    alert('الرجاء إدخال رمز مكون من 4 أرقام فقط!');
     return;
   }
 
@@ -309,14 +323,21 @@ function attemptSelectProfile(name) {
   targetProfileName = name;
   currentEnteredPin = '';
   updatePinDots();
-  document.getElementById('pin-prompt-title').textContent = `رمز الدخول الخاص بـ ${name} 🔑`;
-  document.getElementById('modal-pin-prompt').classList.add('active');
+  
+  const titleEl = document.getElementById('pin-prompt-title');
+  if (titleEl) titleEl.textContent = `رمز الدخول الخاص بـ ${name} 🔑`;
+  
+  const modal = document.getElementById('modal-pin-prompt');
+  if (modal) modal.classList.add('active');
 }
 
 function closePinModal() {
-  document.getElementById('modal-pin-prompt').classList.remove('active');
   targetProfileName = null;
   currentEnteredPin = '';
+  updatePinDots();
+  
+  const modal = document.getElementById('modal-pin-prompt');
+  if (modal) modal.classList.remove('active');
 }
 
 function pressPinKey(digit) {
@@ -352,12 +373,19 @@ function updatePinDots() {
 }
 
 function verifyPin() {
+  if (!targetProfileName) return;
+
   const saved = localStorage.getItem(`kids_english_user_${targetProfileName}`);
   const data = saved ? JSON.parse(saved) : null;
 
   if (data && data.pin === currentEnteredPin) {
     state.profile = targetProfileName;
-    closePinModal();
+    const modal = document.getElementById('modal-pin-prompt');
+    if (modal) modal.classList.remove('active');
+    
+    targetProfileName = null;
+    currentEnteredPin = '';
+    
     showScreen('screen-home');
   } else {
     alert('رمز الدخول غير صحيح! ❌');
