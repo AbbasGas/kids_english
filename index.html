@@ -743,7 +743,7 @@ body { direction: rtl; text-align: center; }
         <div class="modal-content">
             <div class="modal-title">تلميذ جديد ✏️</div>
             <input type="text" id="input-pupil-name" class="input-name" placeholder="اسم التلميذ..." maxlength="20" autocomplete="off">
-            <input type="password" id="input-pupil-pin" class="input-name" placeholder="رمز الدخول (4 أرقام)..." maxlength="4" pattern="\d{4}" inputmode="numeric">
+            <input type="tel" id="input-pupil-pin" class="input-name" placeholder="رمز الدخول (4 أرقام)..." maxlength="4" inputmode="numeric" pattern="[0-9]*" oninput="sanitizePinInput(this)" autocomplete="off">
             <div>
                 <div style="font-size: 14px; color: #666; margin-bottom: 8px;">اختر رمزا:</div>
                 <div class="avatar-selector" id="avatar-selector">
