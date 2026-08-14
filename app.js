@@ -705,6 +705,7 @@ function updatePinDots() {
   }
 }
 
+// ===== NON-BLOCKING PIN VERIFICATION =====
 function verifyPin() {
   if (!targetProfileName || !db) return;
 
@@ -723,7 +724,22 @@ function verifyPin() {
       
       showScreen('screen-home');
     } else {
-      alert('رمز الدخول غير صحيح! ❌');
+      // 1. Shake the PIN display or update title (No blocking alert!)
+      const titleEl = document.getElementById('pin-prompt-title');
+      if (titleEl) {
+        titleEl.textContent = 'رمز خاطئ! حاول مجدداً ❌';
+        titleEl.style.color = '#e74c3c';
+        
+        // Reset title style after 2 seconds
+        setTimeout(() => {
+          if (titleEl) {
+            titleEl.textContent = `رمز الدخول الخاص بـ ${targetProfileName} 🔑`;
+            titleEl.style.color = '#333';
+          }
+        }, 2000);
+      }
+      
+      // 2. Clear PIN input smoothly
       clearPin();
     }
   });
