@@ -124,13 +124,7 @@ const WORDS = {
     {word:'Socks', arabic:'جوارب', emoji:'🧦'}, {word:'Coat', arabic:'معطف', emoji:'🧥'},
     {word:'Boots', arabic:'حذاء طويل', emoji:'🥾'}, {word:'Scarf', arabic:'وشاح', emoji:'🧣'},
     {word:'Gloves', arabic:'قفازات', emoji:'🧤'}, {word:'Belt', arabic:'حزام', emoji:'🪢'},
-    {word:'Tie', arabic:'رباط عنق', emoji:'👔'}, {word:'Suit', arabic:'بدلة', emoji:'Here is the continuation and complete, updated code for `app.js`. In this version, **all profile persistence, authentication PIN checks, progress saving, and leaderboards interact directly with Firebase Realtime Database**.
-
----
-
-### 2. `app.js` (Continued)
-
-```javascript
+    {word:'Tie', arabic:'رباط عنق', emoji:'👔'}, {word:'Suit', arabic:'بدلة', emoji:'👔'},
     {word:'Sneakers', arabic:'حذاء رياضي', emoji:'👟'}, {word:'Pajamas', arabic:'منامة', emoji:'👔'}
   ],
   '2ms_shopping': [
@@ -254,7 +248,7 @@ const WORDS = {
     {word:'Eco-friendly', arabic:'صديق للبيئة', emoji:'🌱'}, {word:'Deforestation', arabic:'قطع الغابات', emoji:'🪓'},
     {word:'Plastic', arabic:'بلاستيك', emoji:'🥤'}, {word:'Ocean pollution', arabic:'تلوث المحيطات', emoji:'🌊'},
     {word:'Plant trees', arabic:'غرس الأشجار', emoji:'🪴'}, {word:'Ecology', arabic:'علم البيئة', emoji:'🍃'},
-    {word:'Oxygen', arabic:'أكسجين', emoji:'💨'}, {word:'Park', arabic:'منتزه', emoji:'```javascript
+    {word:'Oxygen', arabic:'أكسجين', emoji:'💨'}, {word:'Park', arabic:'منتزه', emoji:'🏞️'},
     {word:'Save energy', arabic:'توفير الطاقة', emoji:'💡'}
   ],
   '3ms_wildlife': [
@@ -457,7 +451,6 @@ function saveProgress(data) {
   if (!state.profile || !db) return;
   state.data = data;
   
-  // Direct Firebase push for complete profile persistence
   db.ref(`pupils/${state.profile}`).set({
     name: state.profile,
     pin: data.pin || '0000',
@@ -524,41 +517,16 @@ function sanitizePinInput(input) {
   input.value = input.value.replace(/\D/g, '');
 }
 
-// ===== FIREBASE PROFILES & PIN SYSTEM =====
+// ===== FAIL-PROOF PROFILES SETUP =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
   if (!container) return;
-  container.innerHTML = '<div style="color:#888; font-size:18px;">جاري تحميل التلاميذ... ⏳</div>';
+  
+  container.innerHTML = '<div style="color:#888; font-size:18px; width:100%;">جاري تحميل قائمة التلاميذ... ⏳</div>';
 
-  if (!db) {
-    container.innerHTML = '<div style="color:#e74c3c;">تأكد من ضبط إعدادات Firebase لفتح البروفايلات!</div>';
-    return;
-  }
+  let loaded = false;
 
-  // Load all profiles directly from Firebase Realtime Database
-  db.ref('pupils').once('value', (snapshot) => {
-    container.innerHTML = '';
-
-    snapshot.forEach((childSnapshot) => {
-      const data = childSnapshot.val();
-      const card = document.createElement('div');
-      card.className = 'profile-card';
-      card.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        attemptSelectProfile(data.name);
-      });
-
-      card.innerHTML = `
-        <span class="profile-lock-icon">🔒</span>
-        <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
-        <div class="profile-name">${data.name}</div>
-        <div class="profile-stars">⭐ ${data.stars || 0}</div>
-      `;
-      container.appendChild(card);
-    });
-
-    // "Add Pupil" Card
+  function renderAddCard() {
     const addCard = document.createElement('div');
     addCard.className = 'profile-card add-card';
     addCard.addEventListener('click', (e) => {
@@ -571,7 +539,54 @@ function setupProfiles() {
       <div class="profile-name" style="font-size: 20px;">تلميذ جديد</div>
     `;
     container.appendChild(addCard);
-  });
+  }
+
+  const timeout = setTimeout(() => {
+    if (!loaded) {
+      container.innerHTML = '';
+      renderAddCard();
+    }
+  }, 2500);
+
+  if (typeof db !== 'undefined' && db !== null) {
+    db.ref('pupils').once('value', (snapshot) => {
+      clearTimeout(timeout);
+      loaded = true;
+      container.innerHTML = '';
+
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const data = childSnapshot.val();
+          const card = document.createElement('div');
+          card.className = 'profile-card';
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            attemptSelectProfile(data.name);
+          });
+
+          card.innerHTML = `
+            <span class="profile-lock-icon">🔒</span>
+            <div class="profile-emoji">${data.avatar || '👨‍🎓'}</div>
+            <div class="profile-name">${data.name}</div>
+            <div class="profile-stars">⭐ ${data.stars || 0}</div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      renderAddCard();
+    }).catch(err => {
+      console.error("Firebase Read Error:", err);
+      clearTimeout(timeout);
+      container.innerHTML = '';
+      renderAddCard();
+    });
+  } else {
+    clearTimeout(timeout);
+    container.innerHTML = '';
+    renderAddCard();
+  }
 }
 
 function openProfileModal() {
@@ -617,7 +632,7 @@ function confirmAddProfile() {
   };
 
   state.profile = name;
-  saveProgress(newProfile); // Save new pupil directly to Firebase
+  saveProgress(newProfile);
 
   closeProfileModal();
   showScreen('screen-home');
@@ -679,7 +694,6 @@ function updatePinDots() {
 function verifyPin() {
   if (!targetProfileName || !db) return;
 
-  // Direct PIN verification from Firebase Realtime Database
   db.ref(`pupils/${targetProfileName}`).once('value', (snapshot) => {
     const data = snapshot.val();
 
@@ -714,7 +728,6 @@ function showLeaderboard() {
     return;
   }
 
-  // Live Firebase Query for top pupils ordered by stars
   db.ref('pupils').orderByChild('stars').limitToLast(25).once('value', (snapshot) => {
     container.innerHTML = '';
     const leaderboardData = [];
