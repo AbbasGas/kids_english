@@ -21,7 +21,7 @@ const WORDS = {
   '1ms_greetings': [
     {word:'Hello', arabic:'مرحباً', emoji:'👋'}, {word:'Goodbye', arabic:'إلى اللقاء', emoji:'🖐️'},
     {word:'Good morning', arabic:'صباح الخير', emoji:'🌅'}, {word:'Good afternoon', arabic:'مساء الخير', emoji:'☀️'},
-    {word:'Good evening', arabic:'مساء الخير', emoji:'🌆'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
+    {word:'Good evening', arabic:'مساء الخير', emoji:'🌇'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
     {word:'Name', arabic:'اسم', emoji:'🏷️'}, {word:'Age', arabic:'عمر', emoji:'🎂'},
     {word:'Friend', arabic:'صديق', emoji:'🤝'}, {word:'Welcome', arabic:'أهلاً بك', emoji:'🤗'},
     {word:'Please', arabic:'من فضلك', emoji:'🙏'}, {word:'Thank you', arabic:'شكراً لك', emoji:'💐'},
@@ -171,13 +171,13 @@ const WORDS = {
     {word:'Bus', arabic:'حافلة', emoji:'🚌'}, {word:'Train', arabic:'قطار', emoji:'🚂'},
     {word:'Car', arabic:'سيارة', emoji:'🚗'}, {word:'Airplane', arabic:'طائرة', emoji:'✈️'},
     {word:'Bicycle', arabic:'دراجة', emoji:'🚲'}, {word:'Taxi', arabic:'سيارة أجرة', emoji:'🚕'},
-    {word:'Ship', arabic:'سفينة', emoji:'🚢'}, {word:'Station', arabic:'محطة', emoji:'🚉'},
-    {word:'Airport', arabic:'مطار', emoji:'✈️'}, {word:'Map', arabic:'خريطة', emoji:'🗺️'},
-    {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'}, {word:'Hotel', arabic:'فندق', emoji:'🏨'},
-    {word:'Tourist', arabic:'سائح', emoji:'📸'}, {word:'Street', arabic:'شارع', emoji:'🛣️'},
-    {word:'Turn left', arabic:'انعطف يساراً', emoji:'⬅️'}, {word:'Turn right', arabic:'انعطف يميناً', emoji:'➡️'},
-    {word:'Straight ahead', arabic:'إلى الأمام مباشرة', emoji:'⬆️'}, {word:'Crossroad', arabic:'مفترق طرق', emoji:'🚦'},
-    {word:'Travel', arabic:'يسافر', emoji:'🧳'}, {word:'Passport', arabic:'جواز سفر', emoji:'📕'}
+    {word:'Ship', arabic:'سفينة', emoji:'🚢'}, {word:'Station', arabic:'محطة', emoji:'🚉'}, {word:'Airport', arabic:'مطار', emoji:'✈️'},
+    {word:'Map', arabic:'خريطة', emoji:'🗺️'}, {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'},
+    {word:'Hotel', arabic:'فندق', emoji:'🏨'}, {word:'Tourist', arabic:'سائح', emoji:'📸'},
+    {word:'Street', arabic:'شارع', emoji:'🛣️'}, {word:'Turn left', arabic:'انعطف يساراً', emoji:'⬅️'},
+    {word:'Turn right', arabic:'انعطف يميناً', emoji:'➡️'}, {word:'Straight ahead', arabic:'إلى الأمام مباشرة', emoji:'⬆️'},
+    {word:'Crossroad', arabic:'مفترق طرق', emoji:'🚦'}, {word:'Travel', arabic:'يسافر', emoji:'🧳'},
+    {word:'Passport', arabic:'جواز سفر', emoji:'📕'}
   ],
   '2ms_sports_hobbies': [
     {word:'Football', arabic:'كرة القدم', emoji:'⚽'}, {word:'Basketball', arabic:'كرة السلة', emoji:'🏀'},
@@ -441,6 +441,23 @@ function speak(text) {
   window.speechSynthesis.speak(u);
 }
 
+// Helper to show smooth inline error messages in modals without blocking WebView
+function showModalError(elementId, text) {
+  let errEl = document.getElementById(elementId);
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.id = elementId;
+    errEl.style.cssText = 'color:#e74c3c; font-size:14px; font-weight:700; margin-top:8px; text-align:center; transition: opacity 0.3s;';
+    const modalContent = document.querySelector('#modal-add-profile .modal-content');
+    if (modalContent) modalContent.appendChild(errEl);
+  }
+  errEl.textContent = text;
+  errEl.style.opacity = '1';
+  setTimeout(() => {
+    if (errEl) errEl.style.opacity = '0';
+  }, 3500);
+}
+
 // ===== FIREBASE DATA OPERATIONS =====
 function getProgress() {
   if (state.data) return state.data;
@@ -593,6 +610,8 @@ function openProfileModal() {
   document.getElementById('modal-add-profile').classList.add('active');
   document.getElementById('input-pupil-name').value = '';
   document.getElementById('input-pupil-pin').value = '';
+  const errEl = document.getElementById('add-profile-err');
+  if (errEl) errEl.style.opacity = '0';
   document.getElementById('input-pupil-name').focus();
 }
 
@@ -606,7 +625,7 @@ function selectAvatar(emoji, el) {
   if (el) el.classList.add('selected');
 }
 
-// ===== PREVENT OVERWRITING EXISTING PUPILS =====
+// ===== PREVENT OVERWRITING & FRIENDLY WEBVIEW ERRORS =====
 function confirmAddProfile() {
   const input = document.getElementById('input-pupil-name');
   const pinInput = document.getElementById('input-pupil-pin');
@@ -614,23 +633,23 @@ function confirmAddProfile() {
   const pin = pinInput.value.trim();
 
   if (!name) {
-    alert('الرجاء إدخال اسم التلميذ!');
+    showModalError('add-profile-err', 'الرجاء إدخال اسم التلميذ! ✏️');
     return;
   }
   if (!/^\d{4}$/.test(pin)) {
-    alert('الرجاء إدخال رمز مكون من 4 أرقام فقط!');
+    showModalError('add-profile-err', 'الرجاء إدخال رمز مكون من 4 أرقام فقط! 🔑');
     return;
   }
 
   if (!db) {
-    alert('جاري الإتصال بالخادم، يرجى المحاولة بعد لحظات...');
+    showModalError('add-profile-err', 'جاري الاتصال بالخادم، يرجى المحاولة بعد لحظات... ⏳');
     return;
   }
 
   // Check if pupil name already exists in Firebase before creating
   db.ref(`pupils/${name}`).once('value', (snapshot) => {
     if (snapshot.exists()) {
-      alert(`عذراً! الاسم "${name}" مستعمل من قبل. يرجى اختيار اسم آخر أو تسجبل الدخول بإدخال رمزك الشخصي.`);
+      showModalError('add-profile-err', `عذراً! الاسم "${name}" مستعمل من قبل. يرجى اختيار اسم آخر! ⚠️`);
     } else {
       // Create new profile safely without overwriting
       const newProfile = {
@@ -658,7 +677,10 @@ function attemptSelectProfile(name) {
   updatePinDots();
   
   const titleEl = document.getElementById('pin-prompt-title');
-  if (titleEl) titleEl.textContent = `رمز الدخول الخاص بـ ${name} 🔑`;
+  if (titleEl) {
+    titleEl.textContent = `رمز الدخول الخاص بـ ${name} 🔑`;
+    titleEl.style.color = '#333';
+  }
   
   const modal = document.getElementById('modal-pin-prompt');
   if (modal) modal.classList.add('active');
@@ -724,22 +746,20 @@ function verifyPin() {
       
       showScreen('screen-home');
     } else {
-      // 1. Shake the PIN display or update title (No blocking alert!)
+      // Smooth inline error (No blocking native alert!)
       const titleEl = document.getElementById('pin-prompt-title');
       if (titleEl) {
         titleEl.textContent = 'رمز خاطئ! حاول مجدداً ❌';
         titleEl.style.color = '#e74c3c';
         
-        // Reset title style after 2 seconds
         setTimeout(() => {
-          if (titleEl) {
+          if (titleEl && targetProfileName) {
             titleEl.textContent = `رمز الدخول الخاص بـ ${targetProfileName} 🔑`;
             titleEl.style.color = '#333';
           }
         }, 2000);
       }
       
-      // 2. Clear PIN input smoothly
       clearPin();
     }
   });
