@@ -1,113 +1,164 @@
-// ===== VOCABULARY DATA =====
+// ===== VOCABULARY DATA (ALGERIAN MIDDLE SCHOOL SYLLABUS: 1MS - 4MS) =====
 const WORDS = {
-  animals: [
-    {word:'Dog',arabic:'كلب',emoji:'🐶'},{word:'Cat',arabic:'قطة',emoji:'🐱'},
-    {word:'Bird',arabic:'عصفور',emoji:'🐦'},{word:'Fish',arabic:'سمكة',emoji:'🐟'},
-    {word:'Horse',arabic:'حصان',emoji:'🐴'},{word:'Cow',arabic:'بقرة',emoji:'🐄'},
-    {word:'Rabbit',arabic:'أرنب',emoji:'🐰'},{word:'Bear',arabic:'دب',emoji:'🐻'},
-    {word:'Lion',arabic:'أسد',emoji:'🦁'},{word:'Monkey',arabic:'قرد',emoji:'🐵'},
-    {word:'Elephant',arabic:'فيل',emoji:'🐘'}
+  // ==================== 1MS (FIRST YEAR) ====================
+  '1ms_greetings': [
+    {word:'Hello', arabic:'مرحباً', emoji:'👋'}, {word:'Goodbye', arabic:'إلى اللقاء', emoji:'🖐️'},
+    {word:'Good morning', arabic:'صباح الخير', emoji:'🌅'}, {word:'Good evening', arabic:'مساء الخير', emoji:'🌆'},
+    {word:'Name', arabic:'اسم', emoji:'🏷️'}, {word:'Age', arabic:'عمر', emoji:'🎂'},
+    {word:'Friend', arabic:'صديق', emoji:'🤝'}, {word:'Welcome', arabic:'أهلاً بك', emoji:'🤗'},
+    {word:'Please', arabic:'من فضلك', emoji:'🙏'}, {word:'Thank you', arabic:'شكراً لك', emoji:'💐'}
   ],
-  food: [
-    {word:'Apple',arabic:'تفاحة',emoji:'🍎'},{word:'Banana',arabic:'موزة',emoji:'🍌'},
-    {word:'Bread',arabic:'خبز',emoji:'🍞'},{word:'Water',arabic:'ماء',emoji:'💧'},
-    {word:'Milk',arabic:'حليب',emoji:'🥛'},{word:'Egg',arabic:'بيضة',emoji:'🥚'},
-    {word:'Rice',arabic:'أرز',emoji:'🍚'},{word:'Cake',arabic:'كعكة',emoji:'🎂'},
-    {word:'Pizza',arabic:'بيتزا',emoji:'🍕'},{word:'Ice Cream',arabic:'مثلجات',emoji:'🍦'}
+  '1ms_school': [
+    {word:'Book', arabic:'كتاب', emoji:'📖'}, {word:'Copybook', arabic:'كراس', emoji:'📓'},
+    {word:'Pen', arabic:'قلم جاف', emoji:'🖊️'}, {word:'Pencil', arabic:'قلم رصاص', emoji:'✏️'},
+    {word:'Eraser', arabic:'ممحاة', emoji:'🧹'}, {word:'Ruler', arabic:'مسطرة', emoji:'📏'},
+    {word:'Schoolbag', arabic:'محفظة', emoji:'🎒'}, {word:'Board', arabic:'سبورة', emoji:'📋'},
+    {word:'Desk', arabic:'مكتب', emoji:'🪑'}, {word:'Teacher', arabic:'معلم', emoji:'👩‍🏫'},
+    {word:'Pupil', arabic:'تلميذ', emoji:'👨‍🎓'}, {word:'Classroom', arabic:'قسم', emoji:'🏫'},
+    {word:'Scissors', arabic:'مقص', emoji:'✂️'}, {word:'Pencil case', arabic:'مقلمة', emoji:'👝'}
   ],
-  colors: [
-    {word:'Red',arabic:'أحمر',emoji:'🔴'},{word:'Blue',arabic:'أزرق',emoji:'🔵'},
-    {word:'Green',arabic:'أخضر',emoji:'🟢'},{word:'Yellow',arabic:'أصفر',emoji:'🟡'},
-    {word:'Pink',arabic:'وردي',emoji:'🩷'},{word:'Orange',arabic:'برتقالي',emoji:'🟠'},
-    {word:'Purple',arabic:'بنفسجي',emoji:'🟣'},{word:'White',arabic:'أبيض',emoji:'⬜'},
-    {word:'Black',arabic:'أسود',emoji:'⬛'}
+  '1ms_family': [
+    {word:'Mother', arabic:'أم', emoji:'👩'}, {word:'Father', arabic:'أب', emoji:'👨'},
+    {word:'Brother', arabic:'أخ', emoji:'👦'}, {word:'Sister', arabic:'أخت', emoji:'👧'},
+    {word:'Grandmother', arabic:'جدة', emoji:'👵'}, {word:'Grandfather', arabic:'جد', emoji:'👴'},
+    {word:'Uncle', arabic:'عم / خال', emoji:'👨‍💼'}, {word:'Aunt', arabic:'عمة / خالة', emoji:'👩‍💼'},
+    {word:'Baby', arabic:'رضيع', emoji:'👶'}, {word:'Parents', arabic:'والدان', emoji:'👨‍👩‍👧'}
   ],
-  numbers: [
-    {word:'One',arabic:'واحد',emoji:'1️⃣'},{word:'Two',arabic:'اثنان',emoji:'2️⃣'},
-    {word:'Three',arabic:'ثلاثة',emoji:'3️⃣'},{word:'Four',arabic:'أربعة',emoji:'4️⃣'},
-    {word:'Five',arabic:'خمسة',emoji:'5️⃣'},{word:'Six',arabic:'ستة',emoji:'6️⃣'},
-    {word:'Seven',arabic:'سبعة',emoji:'7️⃣'},{word:'Eight',arabic:'ثمانية',emoji:'8️⃣'},
-    {word:'Nine',arabic:'تسعة',emoji:'9️⃣'},{word:'Ten',arabic:'عشرة',emoji:'🔟'}
+  '1ms_routines': [
+    {word:'Wake up', arabic:'يستيقظ', emoji:'⏰'}, {word:'Wash face', arabic:'يغسل وجهه', emoji:'🧼'},
+    {word:'Pray', arabic:'يصلي', emoji:'🤲'}, {word:'Eat breakfast', arabic:'يتناول الفطور', emoji:'🍳'},
+    {word:'Brush teeth', arabic:'ينظف أسنانه', emoji:'🪥'}, {word:'Go to school', arabic:'يذهب للمدرسة', emoji:'🚶‍♂️'},
+    {word:'Sleep', arabic:'ينام', emoji:'😴'}, {word:'Read', arabic:'يقرأ', emoji:'📚'},
+    {word:'Play', arabic:'يلعب', emoji:'⚽'}, {word:'Watch TV', arabic:'يشاهد التلفاز', emoji:'📺'}
   ],
-  family: [
-    {word:'Mom',arabic:'أمي',emoji:'👩'},{word:'Dad',arabic:'أبي',emoji:'👨'},
-    {word:'Brother',arabic:'أخي',emoji:'👦'},{word:'Sister',arabic:'أختي',emoji:'👧'},
-    {word:'Baby',arabic:'طفل رضيع',emoji:'👶'},{word:'Grandma',arabic:'جدتي',emoji:'👵'},
-    {word:'Grandpa',arabic:'جدي',emoji:'👴'}
+  '1ms_colors_num': [
+    {word:'One', arabic:'واحد', emoji:'1️⃣'}, {word:'Two', arabic:'اثنان', emoji:'2️⃣'},
+    {word:'Three', arabic:'ثلاثة', emoji:'3️⃣'}, {word:'Four', arabic:'أربعة', emoji:'4️⃣'},
+    {word:'Five', arabic:'خمسة', emoji:'5️⃣'}, {word:'Ten', arabic:'عشرة', emoji:'🔟'},
+    {word:'Red', arabic:'أحمر', emoji:'🔴'}, {word:'Blue', arabic:'أزرق', emoji:'🔵'},
+    {word:'Green', arabic:'أخضر', emoji:'🟢'}, {word:'Yellow', arabic:'أصفر', emoji:'🟡'},
+    {word:'White', arabic:'أبيض', emoji:'⬜'}, {word:'Black', arabic:'أسود', emoji:'⬛'}
   ],
-  body: [
-    {word:'Head',arabic:'رأس',emoji:'🗣️'},{word:'Hand',arabic:'يد',emoji:'✋'},
-    {word:'Eye',arabic:'عين',emoji:'👁️'},{word:'Ear',arabic:'أذن',emoji:'👂'},
-    {word:'Nose',arabic:'أنف',emoji:'👃'},{word:'Mouth',arabic:'فم',emoji:'👄'},
-    {word:'Leg',arabic:'ساق',emoji:'🦵'},{word:'Foot',arabic:'قدم',emoji:'🦶'}
+
+  // ==================== 2MS (SECOND YEAR) ====================
+  '2ms_appearance': [
+    {word:'Tall', arabic:'طويل', emoji:'📏'}, {word:'Short', arabic:'قصير', emoji:'📐'},
+    {word:'Slim', arabic:'نحيف', emoji:'🧍'}, {word:'Fat', arabic:'سمين', emoji:'🚶‍♂️'},
+    {word:'Eye', arabic:'عين', emoji:'👁️'}, {word:'Hair', arabic:'شعر', emoji:'💇'},
+    {word:'Straight hair', arabic:'شعر أملس', emoji:'👩'}, {word:'Wavy hair', arabic:'شعر موجي', emoji:'👩‍🦱'},
+    {word:'Glasses', arabic:'نظارات', emoji:'👓'}, {word:'Smile', arabic:'ابتسامة', emoji:'😊'}
   ],
-  clothes: [
-    {word:'Shirt',arabic:'قميص',emoji:'👕'},{word:'Pants',arabic:'بنطال',emoji:'👖'},
-    {word:'Shoes',arabic:'حذاء',emoji:'👟'},{word:'Hat',arabic:'قبعة',emoji:'🧢'},
-    {word:'Dress',arabic:'فستان',emoji:'👗'},{word:'Socks',arabic:'جوارب',emoji:'🧦'},
-    {word:'Tie',arabic:'رباط عنق',emoji:'👔'},{word:'Belt',arabic:'حزام',emoji:'🪢'}
+  '2ms_clothes': [
+    {word:'Shirt', arabic:'قميص', emoji:'👕'}, {word:'Pants', arabic:'بنطال', emoji:'👖'},
+    {word:'Shoes', arabic:'حذاء', emoji:'👟'}, {word:'Jacket', arabic:'سترة', emoji:'🧥'},
+    {word:'Dress', arabic:'فستان', emoji:'👗'}, {word:'Skirt', arabic:'تنورة', emoji:'👗'},
+    {word:'Cap', arabic:'قبعة', emoji:'🧢'}, {word:'Socks', arabic:'جوارب', emoji:'🧦'},
+    {word:'Coat', arabic:'معطف', emoji:'🧥'}, {word:'Boots', arabic:'حذاء طويل', emoji:'🥾'}
   ],
-  house: [
-    {word:'Door',arabic:'باب',emoji:'🚪'},{word:'Bed',arabic:'سرير',emoji:'🛏️'},
-    {word:'Chair',arabic:'كرسي',emoji:'🪑'},{word:'Bath',arabic:'حوض استحمام',emoji:'🛁'},
-    {word:'Kitchen',arabic:'مطبخ',emoji:'🍳'},{word:'Key',arabic:'مفتاح',emoji:'🔑'}
+  '2ms_shopping': [
+    {word:'Apple', arabic:'تفاحة', emoji:'🍎'}, {word:'Milk', arabic:'حليب', emoji:'🥛'},
+    {word:'Bread', arabic:'خبز', emoji:'🍞'}, {word:'Meat', arabic:'لحم', emoji:'🥩'},
+    {word:'Chicken', arabic:'دجاج', emoji:'🍗'}, {word:'Fish', arabic:'سمك', emoji:'🐟'},
+    {word:'Price', arabic:'سعر', emoji:'🏷️'}, {word:'Kilo', arabic:'كيلوغرام', emoji:'⚖️'},
+    {word:'Money', arabic:'دينار / نقود', emoji:'💵'}, {word:'Supermarket', arabic:'متجر', emoji:'🛒'}
   ],
-  transport: [
-    {word:'Car',arabic:'سيارة',emoji:'🚗'},{word:'Bus',arabic:'حافلة',emoji:'🚌'},
-    {word:'Airplane',arabic:'طائرة',emoji:'✈️'},{word:'Bike',arabic:'دراجة',emoji:'🚲'},
-    {word:'Train',arabic:'قطار',emoji:'🚂'},{word:'Boat',arabic:'قارب',emoji:'⛵'},
-    {word:'Fire Truck',arabic:'سيارة إطفاء',emoji:'🚒'},{word:'Ambulance',arabic:'سيارة إسعاف',emoji:'🚑'},
-    {word:'Police Car',arabic:'سيارة شرطة',emoji:'🚓'}
+  '2ms_house': [
+    {word:'Living room', arabic:'غرفة المعيشة', emoji:'🛋️'}, {word:'Bedroom', arabic:'غرفة النوم', emoji:'🛏️'},
+    {word:'Kitchen', arabic:'مطبخ', emoji:'🍳'}, {word:'Bathroom', arabic:'حمام', emoji:'🛁'},
+    {word:'Garden', arabic:'حديقة', emoji:'🏡'}, {word:'Bed', arabic:'سرير', emoji:'🛏️'},
+    {word:'Table', arabic:'طاولة', emoji:'🪵'}, {word:'Chair', arabic:'كرسي', emoji:'🪑'},
+    {word:'Sofa', arabic:'أريكة', emoji:'🛋️'}, {word:'Fridge', arabic:'ثلاجة', emoji:'🧊'}
   ],
-  nature: [
-    {word:'Sun',arabic:'شمس',emoji:'☀️'},{word:'Moon',arabic:'قمر',emoji:'🌙'},
-    {word:'Star',arabic:'نجمة',emoji:'⭐'},{word:'Tree',arabic:'شجرة',emoji:'🌳'},
-    {word:'Flower',arabic:'زهرة',emoji:'🌸'},{word:'Rain',arabic:'مطر',emoji:'🌧️'},
-    {word:'Cloud',arabic:'غيمة',emoji:'☁️'}
+  '2ms_health': [
+    {word:'Doctor', arabic:'طبيب', emoji:'👨‍⚕️'}, {word:'Nurse', arabic:'ممرضة', emoji:'👩‍⚕️'},
+    {word:'Hospital', arabic:'مستشفى', emoji:'🏥'}, {word:'Fever', arabic:'حمى', emoji:'🤒'},
+    {word:'Cough', arabic:'سعال', emoji:'🤧'}, {word:'Headache', arabic:'صداع', emoji:'🤯'},
+    {word:'Toothache', arabic:'ألم الأسنان', emoji:'🦷'}, {word:'Medicine', arabic:'دواء', emoji:'💊'}
   ],
-  school: [
-    {word:'Book',arabic:'كتاب',emoji:'📖'},{word:'Pen',arabic:'قلم',emoji:'🖊️'},
-    {word:'Bag',arabic:'حقيبة',emoji:'🎒'},{word:'Teacher',arabic:'معلم',emoji:'👩‍🏫'},
-    {word:'Friend',arabic:'صديق',emoji:'🤝'}
+  '2ms_travel': [
+    {word:'Bus', arabic:'حافلة', emoji:'🚌'}, {word:'Train', arabic:'قطار', emoji:'🚂'},
+    {word:'Car', arabic:'سيارة', emoji:'🚗'}, {word:'Airplane', arabic:'طائرة', emoji:'✈️'},
+    {word:'Station', arabic:'محطة', emoji:'🚉'}, {word:'Map', arabic:'خريطة', emoji:'🗺️'},
+    {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'}, {word:'Hotel', arabic:'فندق', emoji:'🏨'}
   ],
-  furniture: [
-    {word:'Table',arabic:'طاولة',image:'images/table.png'},{word:'Sofa',arabic:'أريكة',emoji:'🛋️'},
-    {word:'Lamp',arabic:'مصباح',emoji:'💡'},{word:'Shelf',arabic:'رف',image:'images/shelf.png'},
-    {word:'Desk',arabic:'مكتب',image:'images/desk.png'},{word:'Mirror',arabic:'مرآة',emoji:'🪞'},
-    {word:'Clock',arabic:'ساعة',emoji:'🕐'},{word:'Closet',arabic:'خزانة',image:'images/closet.png'}
+
+  // ==================== 3MS (THIRD YEAR) ====================
+  '3ms_personality': [
+    {word:'Smart', arabic:'ذكي', emoji:'🧠'}, {word:'Kind', arabic:'لطيف', emoji:'😊'},
+    {word:'Active', arabic:'نشيط', emoji:'⚡'}, {word:'Shy', arabic:'خجول', emoji:'😳'},
+    {word:'Helpful', arabic:'خدوم', emoji:'🤝'}, {word:'Honest', arabic:'صادق', emoji:'😇'},
+    {word:'Brave', arabic:'شجاع', emoji:'🦁'}, {word:'Creative', arabic:'مبدع', emoji:'🎨'}
   ],
-  household: [
-    {word:'Cup',arabic:'كوب',emoji:'🥤'},{word:'Plate',arabic:'صحن',emoji:'🍽️'},
-    {word:'Spoon',arabic:'ملعقة',emoji:'🥄'},{word:'Fork',arabic:'شوكة',emoji:'🍴'},
-    {word:'Knife',arabic:'سكين',emoji:'🔪'},{word:'Pot',arabic:'قدر',emoji:'🍲'},
-    {word:'Bowl',arabic:'وعاء',emoji:'🥣'},{word:'Broom',arabic:'مكنسة',emoji:'🧹'},
-    {word:'Towel',arabic:'منشفة',emoji:'🧻'},{word:'Soap',arabic:'صابون',emoji:'🧼'}
+  '3ms_lifestyles': [
+    {word:'Past', arabic:'الماضي', emoji:'📜'}, {word:'Present', arabic:'الحاضر', emoji:'⏰'},
+    {word:'Traditional', arabic:'تقليدي', emoji:'🏺'}, {word:'Modern', arabic:'حديث', emoji:'📱'},
+    {word:'Ancient', arabic:'قديم جداً', emoji:'🏛️'}, {word:'Costume', arabic:'زي تقليدي', emoji:'👘'},
+    {word:'Dish', arabic:'أكلة تقليدية', emoji:'🍲'}, {word:'History', arabic:'تاريخ', emoji:'📖'}
   ],
-  alphabet: [
-    {word:'A',arabic:'أي',emoji:'🅰️'},{word:'B',arabic:'بي',emoji:'🅱️'},
-    {word:'C',arabic:'سي',emoji:'©️'},{word:'D',arabic:'دي',emoji:'🇩'},
-    {word:'E',arabic:'إي',emoji:'🇪'},{word:'F',arabic:'إف',emoji:'🇫'},
-    {word:'G',arabic:'جي',emoji:'🇬'},{word:'H',arabic:'إتش',emoji:'🇭'},
-    {word:'I',arabic:'آي',emoji:'ℹ️'},{word:'J',arabic:'جاي',emoji:'🇯'},
-    {word:'K',arabic:'كاي',emoji:'🇰'},{word:'L',arabic:'إل',emoji:'🇱'},
-    {word:'M',arabic:'إم',emoji:'Ⓜ️'},{word:'N',arabic:'إن',emoji:'🇳'},
-    {word:'O',arabic:'أو',emoji:'⭕'},{word:'P',arabic:'بي',emoji:'🅿️'},
-    {word:'Q',arabic:'كيو',emoji:'🇶'},{word:'R',arabic:'آر',emoji:'🇷'},
-    {word:'S',arabic:'إس',emoji:'🇸'},{word:'T',arabic:'تي',emoji:'🇹'},
-    {word:'U',arabic:'يو',emoji:'🇺'},{word:'V',arabic:'في',emoji:'🇻'},
-    {word:'W',arabic:'دبليو',emoji:'🇼'},{word:'X',arabic:'إكس',emoji:'❌'},
-    {word:'Y',arabic:'واي',emoji:'🇾'},{word:'Z',arabic:'زيد',emoji:'🇿'}
+  '3ms_science': [
+    {word:'Scientist', arabic:'عالم', emoji:'🔬'}, {word:'Invention', arabic:'اختراع', emoji:'💡'},
+    {word:'Discovery', arabic:'اكتشاف', emoji:'🔍'}, {word:'Robot', arabic:'روبوت', emoji:'🤖'},
+    {word:'Computer', arabic:'حاسوب', emoji:'💻'}, {word:'Telephone', arabic:'هاتف', emoji:'📞'},
+    {word:'Rocket', arabic:'صاروخ', emoji:'🚀'}, {word:'Space', arabic:'فضاء', emoji:'🌌'}
+  ],
+  '3ms_environment': [
+    {word:'Tree', arabic:'شجرة', emoji:'🌳'}, {word:'Forest', arabic:'غابة', emoji:'🌲'},
+    {word:'Pollution', arabic:'تلوث', emoji:'🏭'}, {word:'Clean', arabic:'نظيف', emoji:'✨'},
+    {word:'Recycle', arabic:'إعادة تدوير', emoji:'♻️'}, {word:'Animal', arabic:'حيوان', emoji:'🐾'},
+    {word:'Protect', arabic:'يحمي', emoji:'🛡️'}, {word:'Nature', arabic:'طبيعة', emoji:'🌿'}
+  ],
+
+  // ==================== 4MS (FOURTH YEAR / BEM) ====================
+  '4ms_landmarks': [
+    {word:'Monument', arabic:'معلم تاريخي', emoji:'🏛️'}, {word:'Tower', arabic:'برج', emoji:'🗼'},
+    {word:'Bridge', arabic:'جسر', emoji:'🌉'}, {word:'Palace', arabic:'قصر', emoji:'🏰'},
+    {word:'Museum', arabic:'متحف', emoji:'🏛️'}, {word:'Mosque', arabic:'مسجد', emoji:'🕌'},
+    {word:'Statue', arabic:'تمثال', emoji:'🗿'}, {word:'Landmark', arabic:'معلم شهير', emoji:'📍'}
+  ],
+  '4ms_figures': [
+    {word:'Writer', arabic:'كاتب', emoji:'✍️'}, {word:'Poet', arabic:'شاعر', emoji:'📜'},
+    {word:'Hero', arabic:'بطل تاريخي', emoji:'⚔️'}, {word:'Artist', arabic:'فنان', emoji:'🎨'},
+    {word:'Leader', arabic:'قائد', emoji:'👑'}, {word:'Scholar', arabic:'باحث / باحثة', emoji:'📚'}
+  ],
+  '4ms_careers': [
+    {word:'Engineer', arabic:'مهندس', emoji:'👷'}, {word:'Pilot', arabic:'طيار', emoji:'🧑‍✈️'},
+    {word:'Journalist', arabic:'صحفي', emoji:'🎙️'}, {word:'Judge', arabic:'قاضي', emoji:'⚖️'},
+    {word:'Architect', arabic:'مهندس معماري', emoji:'📐'}, {word:'Surgeon', arabic:'جراح', emoji:'🩺'}
+  ],
+  '4ms_citizenship': [
+    {word:'Volunteer', arabic:'متطوع', emoji:'🙋‍♂️'}, {word:'Charity', arabic:'جمعية خيرية', emoji:'❤️'},
+    {word:'Donate', arabic:'يتبرع', emoji:'🎁'}, {word:'Peace', arabic:'سلام', emoji:'🕊️'},
+    {word:'Citizenship', arabic:'مواطنة', emoji:'🇩🇿'}, {word:'Rights', arabic:'حقوق', emoji:'📜'}
   ]
 };
 
 const CATEGORIES = [
-  {id:'animals',name:'حيوانات',emoji:'🐾'},{id:'food',name:'طعام',emoji:'🍎'},
-  {id:'colors',name:'ألوان',emoji:'🎨'},{id:'numbers',name:'أرقام',emoji:'🔢'},
-  {id:'family',name:'عائلة',emoji:'👨‍👩‍👧‍👦'},{id:'body',name:'جسم',emoji:'🫀'},
-  {id:'clothes',name:'ملابس',emoji:'👕'},{id:'house',name:'منزل',emoji:'🏠'},
-  {id:'transport',name:'مواصلات',emoji:'🚗'},{id:'nature',name:'طبيعة',emoji:'🌿'},
-  {id:'school',name:'مدرسة',emoji:'📚'},{id:'furniture',name:'أثاث',emoji:'🛋️'},
-  {id:'household',name:'أدوات منزلية',emoji:'🍽️'},{id:'alphabet',name:'الأبجدية',emoji:'🔤'}
+  // --- 1MS ---
+  {id:'1ms_greetings', name:'Greetings & Basics (1MS)', emoji:'👋'},
+  {id:'1ms_school', name:'School & Classroom (1MS)', emoji:'🎒'},
+  {id:'1ms_family', name:'Family & Relatives (1MS)', emoji:'👨‍👩‍👧‍👦'},
+  {id:'1ms_routines', name:'Daily Routines & Time (1MS)', emoji:'⏰'},
+  {id:'1ms_colors_num', name:'Numbers & Colors (1MS)', emoji:'🎨'},
+
+  // --- 2MS ---
+  {id:'2ms_appearance', name:'Body & Appearance (2MS)', emoji:'👀'},
+  {id:'2ms_clothes', name:'Clothes & Fashion (2MS)', emoji:'👕'},
+  {id:'2ms_shopping', name:'Food & Shopping (2MS)', emoji:'🛒'},
+  {id:'2ms_house', name:'House & Furniture (2MS)', emoji:'🏠'},
+  {id:'2ms_health', name:'Health & Illnesses (2MS)', emoji:'🩺'},
+  {id:'2ms_travel', name:'Travel & Directions (2MS)', emoji:'🗺️'},
+
+  // --- 3MS ---
+  {id:'3ms_personality', name:'Personality & Abilities (3MS)', emoji:'🧠'},
+  {id:'3ms_lifestyles', name:'Past & Present Life (3MS)', emoji:'📜'},
+  {id:'3ms_science', name:'Science & Inventions (3MS)', emoji:'🔬'},
+  {id:'3ms_environment', name:'Nature & Environment (3MS)', emoji:'🌱'},
+
+  // --- 4MS ---
+  {id:'4ms_landmarks', name:'Monuments & Landmarks (4MS)', emoji:'🏛️'},
+  {id:'4ms_figures', name:'Outstanding Figures (4MS)', emoji:'📜'},
+  {id:'4ms_careers', name:'Professions & Future (4MS)', emoji:'💼'},
+  {id:'4ms_citizenship', name:'Citizenship & Charity (4MS)', emoji:'🕊️'}
 ];
 
 const BADGES = [
@@ -214,7 +265,7 @@ function updateStarsDisplay(stars) {
   document.getElementById('home-stars').textContent = `⭐ ${stars}`;
 }
 
-// ===== SANITIZER FOR PIN FIELD =====
+// ===== INPUT SANITIZATION =====
 function sanitizePinInput(input) {
   input.value = input.value.replace(/\D/g, '');
 }
