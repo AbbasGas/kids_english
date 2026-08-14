@@ -62,7 +62,7 @@ body { direction: rtl; text-align: center; }
 /* === Profile Selection Screen === */
 #screen-profiles {
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
   background: linear-gradient(180deg, #e8f4fd 0%, #d4e9f7 100%);
 }
 
@@ -70,25 +70,26 @@ body { direction: rtl; text-align: center; }
   font-size: 36px;
   font-weight: 800;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .app-subtitle {
   font-size: 18px;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .profiles-container {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  max-width: 700px;
 }
 
 .profile-card {
-  width: 260px;
-  padding: 30px 20px;
+  width: 220px;
+  padding: 25px 15px;
   border-radius: var(--radius);
   background: var(--card);
   box-shadow: 0 8px 30px var(--shadow);
@@ -96,18 +97,87 @@ body { direction: rtl; text-align: center; }
   transition: transform 0.2s, box-shadow 0.2s;
   border: 4px solid transparent;
 }
-.profile-card:active {
-  transform: scale(0.95);
-}
-.profile-card.child1-card:active,
-.profile-card.child1-card:hover { border-color: var(--alon-primary); }
-.profile-card.child2-card:active,
-.profile-card.child2-card:hover { border-color: var(--romi-primary); }
+.profile-card:active { transform: scale(0.95); }
+.profile-card:hover { border-color: var(--alon-primary); }
 
-.profile-emoji { font-size: 80px; margin-bottom: 10px; }
-.profile-name { font-size: 28px; font-weight: 700; }
-.profile-age { font-size: 16px; color: #888; margin-top: 5px; }
+.profile-card.add-card {
+  border: 3px dashed #3498db;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-emoji { font-size: 70px; margin-bottom: 10px; }
+.profile-name { font-size: 24px; font-weight: 700; color: #2c3e50; word-break: break-word; }
 .profile-stars { font-size: 18px; margin-top: 10px; color: #f39c12; }
+
+/* Modal Form for Pupil Input */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+
+.modal-content {
+  background: var(--card);
+  padding: 30px 25px;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-title { font-size: 22px; font-weight: 700; color: #333; }
+
+.input-name {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 18px;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  text-align: center;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.input-name:focus { border-color: var(--alon-primary); }
+
+.avatar-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.avatar-option {
+  font-size: 38px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #f5f5f5;
+  transition: transform 0.15s;
+}
+.avatar-option:active { transform: scale(0.9); }
+.avatar-option.selected { border-color: var(--alon-primary); background: #e8f5e9; }
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.modal-buttons button { flex: 1; }
 
 /* === Home Screen === */
 #screen-home {
@@ -608,7 +678,7 @@ body { direction: rtl; text-align: center; }
   .flashcard { min-height: 380px; }
   .flashcard-emoji { font-size: 120px; }
   .flashcard-word { font-size: 52px; }
-  .profile-card { width: 300px; padding: 40px 30px; }
+  .profile-card { width: 260px; padding: 30px 20px; }
   .emoji-option { font-size: 70px; padding: 25px 30px; }
   .categories-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -621,28 +691,44 @@ body { direction: rtl; text-align: center; }
     </style>
 </head>
 <body>
+    <!-- Screen: Profiles -->
     <div id="screen-profiles" class="screen active">
         <div class="app-title">🌟 متعة الإنجليزية 🌟</div>
-        <div class="app-subtitle">من يلعب اليوم؟</div>
-        <div class="profiles-container">
-            <div class="profile-card child1-card" onclick="selectProfile('child1')">
-                <div class="profile-emoji">👨‍🎓</div>
-                <div class="profile-name">أحمد - Ahmed</div>
-                <div class="profile-stars" id="child1-stars">⭐ 0</div>
+        <div class="app-subtitle">اختر اسمك للبدء باللعب!</div>
+        <div class="profiles-container" id="profiles-container">
+            <!-- Dynamic profile cards injected via JS -->
+        </div>
+    </div>
+
+    <!-- Modal: Create / Add Pupil -->
+    <div class="modal-overlay" id="modal-add-profile">
+        <div class="modal-content">
+            <div class="modal-title">أدخل اسم التلميذ ✏️</div>
+            <input type="text" id="input-pupil-name" class="input-name" placeholder="اسم التلميذ..." maxlength="20" autocomplete="off">
+            <div>
+                <div style="font-size: 14px; color: #666; margin-bottom: 8px;">اختر رمزا:</div>
+                <div class="avatar-selector" id="avatar-selector">
+                    <span class="avatar-option selected" onclick="selectAvatar('👨‍🎓', this)">👨‍🎓</span>
+                    <span class="avatar-option" onclick="selectAvatar('👩‍🎓', this)">👩‍🎓</span>
+                    <span class="avatar-option" onclick="selectAvatar('🚀', this)">🚀</span>
+                    <span class="avatar-option" onclick="selectAvatar('🦄', this)">🦄</span>
+                    <span class="avatar-option" onclick="selectAvatar('🦁', this)">🦁</span>
+                </div>
             </div>
-            <div class="profile-card child2-card" onclick="selectProfile('child2')">
-                <div class="profile-emoji">🦄</div>
-                <div class="profile-name">سارة - Sarah</div>
-                <div class="profile-stars" id="child2-stars">⭐ 0</div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="confirmAddProfile()">حفظ</button>
+                <button class="btn-secondary" onclick="closeProfileModal()">إلغاء</button>
             </div>
         </div>
     </div>
+
+    <!-- Screen: Home -->
     <div id="screen-home" class="screen">
         <div class="home-header">
             <div class="home-profile-info">
                 <div class="home-avatar" id="home-avatar">🚀</div>
                 <div>
-                    <div class="home-name" id="home-name">أحمد</div>
+                    <div class="home-name" id="home-name">التلميذ</div>
                     <div class="home-stars-count" id="home-stars">⭐ 0</div>
                 </div>
             </div>
@@ -666,6 +752,8 @@ body { direction: rtl; text-align: center; }
         </div>
         <div class="badges-container" id="home-badges"></div>
     </div>
+
+    <!-- Screen: Categories -->
     <div id="screen-categories" class="screen">
         <div class="top-bar">
             <div class="top-bar-title">📚 اختر الفئة</div>
@@ -673,6 +761,8 @@ body { direction: rtl; text-align: center; }
         </div>
         <div class="categories-grid" id="categories-grid"></div>
     </div>
+
+    <!-- Screen: Flashcard Learning -->
     <div id="screen-learn" class="screen">
         <div class="top-bar">
             <div class="learn-category-title" id="learn-category-title"></div>
@@ -691,6 +781,8 @@ body { direction: rtl; text-align: center; }
             <button class="btn-nav" onclick="nextCard()">◀</button>
         </div>
     </div>
+
+    <!-- Screen: Games Selection -->
     <div id="screen-games" class="screen">
         <div class="top-bar">
             <div class="top-bar-title">🎮 اختر لعبة</div>
@@ -698,6 +790,8 @@ body { direction: rtl; text-align: center; }
         </div>
         <div class="games-grid" id="games-grid"></div>
     </div>
+
+    <!-- Screen: Emoji Match Game -->
     <div id="screen-emoji-match" class="screen">
         <div class="top-bar">
             <div class="game-score" id="emoji-score">⭐ 0</div>
@@ -709,6 +803,8 @@ body { direction: rtl; text-align: center; }
         <div class="game-feedback" id="emoji-feedback"></div>
         <div class="flashcard-counter" id="emoji-round"></div>
     </div>
+
+    <!-- Screen: Spelling Game -->
     <div id="screen-spelling" class="screen">
         <div class="top-bar">
             <div class="game-score" id="spelling-score">⭐ 0</div>
@@ -722,6 +818,8 @@ body { direction: rtl; text-align: center; }
         <div class="game-feedback" id="spelling-feedback"></div>
         <div class="flashcard-counter" id="spelling-round"></div>
     </div>
+
+    <!-- Screen: Memory Game -->
     <div id="screen-memory" class="screen">
         <div class="top-bar">
             <div class="game-score" id="memory-score">المحاولات: 0</div>
@@ -730,6 +828,7 @@ body { direction: rtl; text-align: center; }
         <div class="memory-grid" id="memory-grid"></div>
         <div class="game-feedback" id="memory-feedback"></div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
