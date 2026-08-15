@@ -437,15 +437,22 @@ function getAllWords() { const r=[]; for(const c in WORDS) WORDS[c].forEach((w,i
 function renderEmoji(item) { return item.emoji; }
 
 function speak(text) {
-  if(!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
-  const voices = window.speechSynthesis.getVoices();
-  const goodVoice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en')) || 
-                    voices.find(v => v.name.includes('Samantha') && v.lang.startsWith('en')) ||
-                    voices.find(v => v.lang.startsWith('en'));
-  if (goodVoice) u.voice = goodVoice;
-  window.speechSynthesis.speak(u);
+  if (!text) return;
+
+  // 1. If running inside CustomWebView in Niotron / App Inventor
+  if (window.AppInventor && typeof window.AppInventor.setWebViewString === 'function') {
+    window.AppInventor.setWebViewString(`speak:${text}`);
+    return;
+  }
+
+  // 2. Fallback for standard web browser / Chrome desktop testing
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.8;
+    window.speechSynthesis.speak(u);
+  }
 }
 
 // Helper to show smooth inline error messages in modals without blocking WebView
