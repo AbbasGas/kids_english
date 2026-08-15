@@ -26,7 +26,7 @@ const WORDS = {
   '1ms_greetings': [
     {word:'Hello', arabic:'مرحباً', emoji:'👋'}, {word:'Goodbye', arabic:'إلى اللقاء', emoji:'🖐️'},
     {word:'Good morning', arabic:'صباح الخير', emoji:'🌅'}, {word:'Good afternoon', arabic:'مساء الخير', emoji:'☀️'},
-    {word:'Good evening', arabic:'مساء الخير', emoji:'🌆'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
+    {word:'Good evening', arabic:'مساء الخير', emoji:'🌇'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
     {word:'Name', arabic:'اسم', emoji:'🏷️'}, {word:'Age', arabic:'عمر', emoji:'🎂'},
     {word:'Friend', arabic:'صديق', emoji:'🤝'}, {word:'Welcome', arabic:'أهلاً بك', emoji:'🤗'},
     {word:'Please', arabic:'من فضلك', emoji:'🙏'}, {word:'Thank you', arabic:'شكراً لك', emoji:'💐'},
@@ -68,8 +68,7 @@ const WORDS = {
     {word:'Read', arabic:'يقرأ', emoji:'📚'}, {word:'Play', arabic:'يلعب', emoji:'⚽'},
     {word:'Watch TV', arabic:'يشاهد التلفاز', emoji:'📺'}, {word:'Listen to music', arabic:'يستمع للموسيقى', emoji:'🎧'},
     {word:'Comb hair', arabic:'يمشط شعره', emoji:'💇'}, {word:'Get dressed', arabic:'يرتدي ملابسه', emoji:'👔'},
-    {word:'Take a shower', arabic:'يستحم', emoji:'```javascript
-    {word:'Arrive home', arabic:'يعود للبيت', emoji:'🏠'}
+    {word:'Take a shower', arabic:'يستحم', emoji:'🚿'}, {word:'Arrive home', arabic:'يعود للبيت', emoji:'🏠'}
   ],
   '1ms_colors_num': [
     {word:'One', arabic:'واحد', emoji:'1️⃣'}, {word:'Two', arabic:'اثنان', emoji:'2️⃣'},
@@ -180,8 +179,7 @@ const WORDS = {
     {word:'Ship', arabic:'سفينة', emoji:'🚢'}, {word:'Station', arabic:'محطة', emoji:'🚉'},
     {word:'Airport', arabic:'مطار', emoji:'✈️'}, {word:'Map', arabic:'خريطة', emoji:'🗺️'},
     {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'}, {word:'Hotel', arabic:'فندق', emoji:'🏨'},
-    {word:'Tourist', arabic:'سائح', emoji:'📸'}, {word:'Street', arabic:'شارع', emoji:'```javascript
-🛣️'},
+    {word:'Tourist', arabic:'سائح', emoji:'📸'}, {word:'Street', arabic:'شارع', emoji:'🛣️'},
     {word:'Turn left', arabic:'انعطف يساراً', emoji:'⬅️'}, {word:'Turn right', arabic:'انعطف يميناً', emoji:'➡️'},
     {word:'Straight ahead', arabic:'إلى الأمام مباشرة', emoji:'⬆️'}, {word:'Crossroad', arabic:'مفترق طرق', emoji:'🚦'},
     {word:'Travel', arabic:'يسافر', emoji:'🧳'}, {word:'Passport', arabic:'جواز سفر', emoji:'📕'}
