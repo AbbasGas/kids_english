@@ -15,13 +15,18 @@ if (typeof firebase !== 'undefined' && firebase.initializeApp) {
 }
 const db = typeof firebase !== 'undefined' ? firebase.database() : null;
 
+// Force Firebase to keep reconnecting on network drops
+if (db) {
+  db.goOnline();
+}
+
 // ===== VOCABULARY DATA (ALGERIAN MIDDLE SCHOOL SYLLABUS: 1MS - 4MS / 600 WORDS) =====
 const WORDS = {
   // ==================== 1MS (FIRST YEAR) ====================
   '1ms_greetings': [
     {word:'Hello', arabic:'مرحباً', emoji:'👋'}, {word:'Goodbye', arabic:'إلى اللقاء', emoji:'🖐️'},
     {word:'Good morning', arabic:'صباح الخير', emoji:'🌅'}, {word:'Good afternoon', arabic:'مساء الخير', emoji:'☀️'},
-    {word:'Good evening', arabic:'مساء الخير', emoji:'🌇'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
+    {word:'Good evening', arabic:'مساء الخير', emoji:'🌆'}, {word:'Good night', arabic:'تصبح على خير', emoji:'🌙'},
     {word:'Name', arabic:'اسم', emoji:'🏷️'}, {word:'Age', arabic:'عمر', emoji:'🎂'},
     {word:'Friend', arabic:'صديق', emoji:'🤝'}, {word:'Welcome', arabic:'أهلاً بك', emoji:'🤗'},
     {word:'Please', arabic:'من فضلك', emoji:'🙏'}, {word:'Thank you', arabic:'شكراً لك', emoji:'💐'},
@@ -63,7 +68,8 @@ const WORDS = {
     {word:'Read', arabic:'يقرأ', emoji:'📚'}, {word:'Play', arabic:'يلعب', emoji:'⚽'},
     {word:'Watch TV', arabic:'يشاهد التلفاز', emoji:'📺'}, {word:'Listen to music', arabic:'يستمع للموسيقى', emoji:'🎧'},
     {word:'Comb hair', arabic:'يمشط شعره', emoji:'💇'}, {word:'Get dressed', arabic:'يرتدي ملابسه', emoji:'👔'},
-    {word:'Take a shower', arabic:'يستحم', emoji:'🚿'}, {word:'Arrive home', arabic:'يعود للبيت', emoji:'🏠'}
+    {word:'Take a shower', arabic:'يستحم', emoji:'```javascript
+    {word:'Arrive home', arabic:'يعود للبيت', emoji:'🏠'}
   ],
   '1ms_colors_num': [
     {word:'One', arabic:'واحد', emoji:'1️⃣'}, {word:'Two', arabic:'اثنان', emoji:'2️⃣'},
@@ -171,13 +177,14 @@ const WORDS = {
     {word:'Bus', arabic:'حافلة', emoji:'🚌'}, {word:'Train', arabic:'قطار', emoji:'🚂'},
     {word:'Car', arabic:'سيارة', emoji:'🚗'}, {word:'Airplane', arabic:'طائرة', emoji:'✈️'},
     {word:'Bicycle', arabic:'دراجة', emoji:'🚲'}, {word:'Taxi', arabic:'سيارة أجرة', emoji:'🚕'},
-    {word:'Ship', arabic:'سفينة', emoji:'🚢'}, {word:'Station', arabic:'محطة', emoji:'🚉'}, {word:'Airport', arabic:'مطار', emoji:'✈️'},
-    {word:'Map', arabic:'خريطة', emoji:'🗺️'}, {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'},
-    {word:'Hotel', arabic:'فندق', emoji:'🏨'}, {word:'Tourist', arabic:'سائح', emoji:'📸'},
-    {word:'Street', arabic:'شارع', emoji:'🛣️'}, {word:'Turn left', arabic:'انعطف يساراً', emoji:'⬅️'},
-    {word:'Turn right', arabic:'انعطف يميناً', emoji:'➡️'}, {word:'Straight ahead', arabic:'إلى الأمام مباشرة', emoji:'⬆️'},
-    {word:'Crossroad', arabic:'مفترق طرق', emoji:'🚦'}, {word:'Travel', arabic:'يسافر', emoji:'🧳'},
-    {word:'Passport', arabic:'جواز سفر', emoji:'📕'}
+    {word:'Ship', arabic:'سفينة', emoji:'🚢'}, {word:'Station', arabic:'محطة', emoji:'🚉'},
+    {word:'Airport', arabic:'مطار', emoji:'✈️'}, {word:'Map', arabic:'خريطة', emoji:'🗺️'},
+    {word:'Ticket', arabic:'تذكرة', emoji:'🎟️'}, {word:'Hotel', arabic:'فندق', emoji:'🏨'},
+    {word:'Tourist', arabic:'سائح', emoji:'📸'}, {word:'Street', arabic:'شارع', emoji:'```javascript
+🛣️'},
+    {word:'Turn left', arabic:'انعطف يساراً', emoji:'⬅️'}, {word:'Turn right', arabic:'انعطف يميناً', emoji:'➡️'},
+    {word:'Straight ahead', arabic:'إلى الأمام مباشرة', emoji:'⬆️'}, {word:'Crossroad', arabic:'مفترق طرق', emoji:'🚦'},
+    {word:'Travel', arabic:'يسافر', emoji:'🧳'}, {word:'Passport', arabic:'جواز سفر', emoji:'📕'}
   ],
   '2ms_sports_hobbies': [
     {word:'Football', arabic:'كرة القدم', emoji:'⚽'}, {word:'Basketball', arabic:'كرة السلة', emoji:'🏀'},
@@ -423,6 +430,8 @@ let learnState = { category: null, index: 0, timer: null };
 let emojiGame = { words: [], round: 0, score: 0, total: 10 };
 let spellingGame = { words: [], round: 0, score: 0, total: 8, current: null, filled: [] };
 let memoryGame = { cards: [], flipped: [], matched: 0, attempts: 0, busy: false, pairs: 0 };
+let profilesRetryTimer = null;
+let leaderboardRetryTimer = null;
 
 // ===== HELPERS =====
 function shuffle(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
@@ -534,16 +543,16 @@ function sanitizePinInput(input) {
   input.value = input.value.replace(/\D/g, '');
 }
 
-// ===== FAIL-PROOF PROFILES SETUP =====
+// ===== CONTINUOUS AUTO-RETRY PROFILES SETUP =====
 function setupProfiles() {
   const container = document.getElementById('profiles-container');
   if (!container) return;
   
-  container.innerHTML = '<div style="color:#888; font-size:18px; width:100%;">جاري تحميل قائمة التلاميذ... ⏳</div>';
-
-  let loaded = false;
+  if (profilesRetryTimer) clearTimeout(profilesRetryTimer);
 
   function renderAddCard() {
+    if (document.querySelector('.profile-card.add-card')) return;
+
     const addCard = document.createElement('div');
     addCard.className = 'profile-card add-card';
     addCard.addEventListener('click', (e) => {
@@ -558,17 +567,14 @@ function setupProfiles() {
     container.appendChild(addCard);
   }
 
-  const timeout = setTimeout(() => {
-    if (!loaded) {
-      container.innerHTML = '';
-      renderAddCard();
-    }
-  }, 2500);
+  if (container.children.length === 0) {
+    container.innerHTML = '<div id="profiles-loading-status" style="color:#888; font-size:18px; width:100%; margin-bottom:15px;">جاري تحميل قائمة التلاميذ... ⏳</div>';
+  }
 
   if (typeof db !== 'undefined' && db !== null) {
     db.ref('pupils').once('value', (snapshot) => {
-      clearTimeout(timeout);
-      loaded = true;
+      if (profilesRetryTimer) clearTimeout(profilesRetryTimer);
+      
       container.innerHTML = '';
 
       if (snapshot.exists()) {
@@ -595,14 +601,26 @@ function setupProfiles() {
       renderAddCard();
     }).catch(err => {
       console.error("Firebase Read Error:", err);
-      clearTimeout(timeout);
-      container.innerHTML = '';
-      renderAddCard();
+      handleProfilesFetchFailure();
     });
+
+    profilesRetryTimer = setTimeout(() => {
+      if (!document.querySelector('.profile-card:not(.add-card)')) {
+        handleProfilesFetchFailure();
+      }
+    }, 3500);
+
   } else {
-    clearTimeout(timeout);
-    container.innerHTML = '';
+    handleProfilesFetchFailure();
+  }
+
+  function handleProfilesFetchFailure() {
     renderAddCard();
+    const statusEl = document.getElementById('profiles-loading-status');
+    if (statusEl) {
+      statusEl.innerHTML = 'ضعف في الاتصال! جاري إعادة المحاولة تلقائياً... 📡 <br><button onclick="setupProfiles()" style="margin-top:8px; padding:6px 16px; border-radius:10px; border:none; background:#3498db; color:#fff; cursor:pointer;">إعادة المحاولة الآن 🔄</button>';
+    }
+    profilesRetryTimer = setTimeout(setupProfiles, 4000);
   }
 }
 
@@ -646,12 +664,10 @@ function confirmAddProfile() {
     return;
   }
 
-  // Check if pupil name already exists in Firebase before creating
   db.ref(`pupils/${name}`).once('value', (snapshot) => {
     if (snapshot.exists()) {
       showModalError('add-profile-err', `عذراً! الاسم "${name}" مستعمل من قبل. يرجى اختيار اسم آخر! ⚠️`);
     } else {
-      // Create new profile safely without overwriting
       const newProfile = {
         pin: pin,
         learned: {},
@@ -746,7 +762,6 @@ function verifyPin() {
       
       showScreen('screen-home');
     } else {
-      // Smooth inline error (No blocking native alert!)
       const titleEl = document.getElementById('pin-prompt-title');
       if (titleEl) {
         titleEl.textContent = 'رمز خاطئ! حاول مجدداً ❌';
@@ -765,57 +780,67 @@ function verifyPin() {
   });
 }
 
-// ===== CLOUD LEADERBOARD =====
+// ===== CONTINUOUS AUTO-RETRY LEADERBOARD =====
 function showLeaderboard() {
   const container = document.getElementById('leaderboard-list');
   if (!container) return;
   
-  container.innerHTML = '<div style="color:#888; font-size:18px;">جاري تحميل لوحة الصدارة... ⏳</div>';
+  if (leaderboardRetryTimer) clearTimeout(leaderboardRetryTimer);
   showScreen('screen-leaderboard');
 
+  container.innerHTML = '<div style="color:#888; font-size:18px;">جاري تحميل لوحة الصدارة... ⏳</div>';
+
   if (!db) {
-    container.innerHTML = '<div style="color:#888;">يرجى ضبط إعدادات Firebase!</div>';
+    container.innerHTML = '<div style="color:#e74c3c;">خطأ في الاتصال بالسحابة!</div>';
     return;
   }
 
-  db.ref('pupils').orderByChild('stars').limitToLast(25).once('value', (snapshot) => {
-    container.innerHTML = '';
-    const leaderboardData = [];
+  function fetchRanks() {
+    db.ref('pupils').orderByChild('stars').limitToLast(25).once('value', (snapshot) => {
+      if (leaderboardRetryTimer) clearTimeout(leaderboardRetryTimer);
+      container.innerHTML = '';
+      const leaderboardData = [];
 
-    snapshot.forEach((childSnapshot) => {
-      leaderboardData.push(childSnapshot.val());
-    });
+      snapshot.forEach((childSnapshot) => {
+        leaderboardData.push(childSnapshot.val());
+      });
 
-    leaderboardData.reverse();
+      leaderboardData.reverse();
 
-    if (leaderboardData.length === 0) {
-      container.innerHTML = '<div style="color:#888;">لا يوجد تلاميذ مسجلين في السحابة بعد!</div>';
-      return;
-    }
+      if (leaderboardData.length === 0) {
+        container.innerHTML = '<div style="color:#888;">لا يوجد تلاميذ مسجلين في السحابة بعد!</div>';
+        return;
+      }
 
-    leaderboardData.forEach((pupil, index) => {
-      const rank = index + 1;
-      let medal = `#${rank}`;
-      if (rank === 1) medal = '🥇';
-      else if (rank === 2) medal = '🥈';
-      else if (rank === 3) medal = '🥉';
+      leaderboardData.forEach((pupil, index) => {
+        const rank = index + 1;
+        let medal = `#${rank}`;
+        if (rank === 1) medal = '🥇';
+        else if (rank === 2) medal = '🥈';
+        else if (rank === 3) medal = '🥉';
 
-      const card = document.createElement('div');
-      card.className = `leaderboard-card ${rank <= 3 ? 'rank-' + rank : ''}`;
-      card.innerHTML = `
-        <div class="leaderboard-rank">${medal}</div>
-        <div class="leaderboard-user">
-          <span class="leaderboard-avatar">${pupil.avatar || '👨‍🎓'}</span>
-          <div>
-            <div class="leaderboard-name">${pupil.name}</div>
-            <div style="font-size: 12px; color: #888;">📖 تعلم ${pupil.learnedCount || 0} كلمة | 🏆 ${pupil.badgesCount || 0} أوسمة</div>
+        const card = document.createElement('div');
+        card.className = `leaderboard-card ${rank <= 3 ? 'rank-' + rank : ''}`;
+        card.innerHTML = `
+          <div class="leaderboard-rank">${medal}</div>
+          <div class="leaderboard-user">
+            <span class="leaderboard-avatar">${pupil.avatar || '👨‍🎓'}</span>
+            <div>
+              <div class="leaderboard-name">${pupil.name}</div>
+              <div style="font-size: 12px; color: #888;">📖 تعلم ${pupil.learnedCount || 0} كلمة | 🏆 ${pupil.badgesCount || 0} أوسمة</div>
+            </div>
           </div>
-        </div>
-        <div class="leaderboard-stats">⭐ ${pupil.stars || 0}</div>
-      `;
-      container.appendChild(card);
+          <div class="leaderboard-stats">⭐ ${pupil.stars || 0}</div>
+        `;
+        container.appendChild(card);
+      });
+    }).catch(err => {
+      container.innerHTML = '<div style="color:#e74c3c; font-size:16px;">ضعف في الاتصال! جاري المحاولة مجدداً... 📡</div>';
+      leaderboardRetryTimer = setTimeout(fetchRanks, 4000);
     });
-  });
+  }
+
+  fetchRanks();
 }
 
 // ===== HOME =====
